@@ -13,3 +13,9 @@ impl ClickHouseState {
         }
     }
 }
+
+impl Default for ClickHouseState {
+    fn default() -> Self {
+        Self::new()
+    }
+}
