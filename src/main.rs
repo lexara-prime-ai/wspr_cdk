@@ -35,3 +35,11 @@ fn main() {
 
     println!("[OUTPUT]: {:#?}", spot);
 }
+
+/*
+
+   [QUERY]
+
+   wget -q -O - "http://db1.wspr.live/?query=SELECT * FROM wspr.rx LIMIT 5 FORMAT JSON;"
+
+*/
