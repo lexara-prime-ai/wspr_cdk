@@ -1,6 +1,6 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct WsprSpot {
     pub id: u64,
     pub time: chrono::NaiveDateTime,
@@ -22,4 +22,27 @@ pub struct WsprSpot {
     pub drift: i8,
     pub version: String,
     pub code: i8,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Meta {
+    name: String,
+    #[serde(rename = "type")]
+    field_type: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Response {
+    meta: Vec<Meta>,
+    data: Vec<WsprSpot>,
+    rows: usize,
+    rows_before_limit_at_least: usize,
+    statistics: Statistics,
+}
+
+#[derive(Debug, Serailize, Deserialize)]
+pub struct Statistics {
+    elapsed: f64,
+    rows_read: usize,
+    bytes_read: usize,
 }
