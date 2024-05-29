@@ -10,6 +10,7 @@ async fn main() {
     let session = session_manager::SessionManager::new();
 
     ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "10".to_string()).await;
+    
     println!("\n[OUTPUT]: {:?}", state);
 
     // ClickHouseClient::dispatch(&mut state, ClickHouseAction::GetById(1));
