@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use chrono::NaiveDateTime;
 use wspr::{services::prelude::*, state::prelude::*};
 
@@ -8,8 +10,8 @@ fn main() {
 
     println!("{:?}", session);
 
-    // ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get);
-    // println!("\n[OUTPUT]: {:?}", state);
+    ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "10".to_string());
+    println!("\n[OUTPUT]: {:?}", state);
 
     // ClickHouseClient::dispatch(&mut state, ClickHouseAction::GetById(1));
     // println!("\n[OUTPUT]: {:?}", state);
