@@ -1,6 +1,11 @@
+#![allow(non_snake_case)]
 use crate::services::prelude::*;
 use crate::state::prelude::*;
 
+// use anyhow::{Context, Error};
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Deserialize, Serialize)]
 pub struct ClickHouseClient;
 
 impl ClickHouseClient {
@@ -8,7 +13,7 @@ impl ClickHouseClient {
         ClickHouseState::new()
     }
 
-    pub fn dispatch(state: &mut ClickHouseState, action: ClickHouseAction, limit: String) {
+    pub async fn dispatch(state: &mut ClickHouseState, action: ClickHouseAction, limit: String) {
         state.reduce(&action);
 
         match action {
@@ -18,9 +23,15 @@ impl ClickHouseClient {
                 let query = "select * from wspr.rx where time > subtractHours(now(), 2) limit";
 
                 // Create [SERVICE] request.
-                data::DataService::GET_SPOT_DATA(&query.to_string(), limit);
+                let spot_data = data::DataService::GET_SPOT_DATA(&query.to_string(), limit)
+                    .await
+                    .unwrap();
 
-                state.DATA = vec!["Entry1".to_string(), "Entry2".to_string()];
+                ////////////////////////////
+                /////// [DEBUG] logs. //////
+                dbg!("{}", spot_data.clone());
+
+                state.DATA = vec![spot_data];
             }
             ClickHouseAction::GetById(id) => {
                 println!("Fetching record with Id: {}", id.clone());
