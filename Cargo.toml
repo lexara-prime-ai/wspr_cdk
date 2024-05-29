@@ -1,12 +1,24 @@
 [package]
 name = "wspr"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
+authors = ["Irfan Ghat"]
+description = "This crate provides an abstraction that allows you to do analysis on wspr's real time spot data."
+homepage = "https://github.com/lexara-prime-ai/wspr_cdk"
+repository = "https://github.com/lexara-prime-ai/wspr_cdk"
+readme = "README.md"
+keywords = ["radio", "web", "http", "api"]
+categories = ["cdk"]
+license = "MIT"
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0.86"
 chrono = { version = "0.4.38", features = ["serde"] }
 clickhouse = "0.11.6"
+dotenv = "0.15.0"
+reqwest = { version = "0.12.4", features = ["json"] }
 serde = { version = "1.0.203", features = ["derive"] }
 serde_json = "1.0.117"
