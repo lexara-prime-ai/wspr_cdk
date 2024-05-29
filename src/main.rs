@@ -1,3 +1,10 @@
+/*
+   <result_format> [options]:
+       JSON
+       JSONCompact
+       JSONEachRow
+*/
+
 #![allow(unused)]
 
 use chrono::NaiveDateTime;

@@ -6,6 +6,7 @@ use std::result::Result;
 pub struct WsprSpot {
     #[serde(deserialize_with = "deserialize_id")]
     pub id: u64,
+    #[serde(deserialize_with = "parse_time")]
     pub time: chrono::NaiveDateTime,
     pub band: i16,
     pub rx_sign: String,
@@ -27,6 +28,7 @@ pub struct WsprSpot {
     pub code: i8,
 }
 
+/**********************************************************/
 fn deserialize_id<'de, D>(deserializer: D) -> Result<u64, D::Error>
 where
     D: Deserializer<'de>,
@@ -34,6 +36,18 @@ where
     let id_str: String = Deserialize::deserialize(deserializer)?;
     id_str.trim().parse::<u64>().map_err(de::Error::custom)
 }
+/**********************************************************/
+/*---------------------------------------------------------*/
+/**********************************************************/
+fn parse_time<'de, D>(deserializer: D) -> Result<chrono::NaiveDateTime, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let s: String = Deserialize::deserialize(deserializer)?;
+    chrono::NaiveDateTime::parse_from_str(&s, "%Y-%m-%d %H:%M:%S").map_err(serde::de::Error::custom)
+}
+
+/**********************************************************/
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Meta {
