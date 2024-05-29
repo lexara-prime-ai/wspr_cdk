@@ -1,3 +1,10 @@
+/*
+   <result_format> [options]:
+       JSON
+       JSONCompact
+       JSONEachRow
+*/
+
 #![allow(unused)]
 
 use chrono::NaiveDateTime;
@@ -8,9 +15,9 @@ async fn main() {
     let mut state = ClickHouseClient::init();
     let session = session_manager::SessionManager::new();
 
-    ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "1000", "JSON").await;
+    ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "2", "JSON").await;
 
-    println!("\n{:#?}\n", state);
+    // println!("\n{:#?}\n", state);
 
     // ClickHouseClient::dispatch(&mut state, ClickHouseAction::GetById(1));
     // println!("\n[OUTPUT]: {:?}", state);
