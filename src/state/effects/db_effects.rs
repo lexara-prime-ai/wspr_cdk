@@ -42,7 +42,7 @@ impl ClickHouseClient {
                 //// dbg!("{}", spot_data.clone());////
                 ///////////////////////////////////////
                 ///////////////////////////////////////
-                state.DATA = vec![spot_data.trim().to_string()];
+                state.DATA = spot_data;
             }
             #[allow(unreachable_code)]
             ClickHouseAction::GetById(id) => {

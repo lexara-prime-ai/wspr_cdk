@@ -1,9 +1,10 @@
+#![allow(non_snake_case)]
+
 use super::prelude::WsprSpot;
 
 #[derive(Debug)]
-#[allow(non_snake_case)]
 pub struct ClickHouseState {
-    pub DATA: Vec<String>,
+    pub DATA: Vec<WsprSpot>,
     pub STATUS: String,
 }
 

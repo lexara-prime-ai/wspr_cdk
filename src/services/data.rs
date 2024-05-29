@@ -16,7 +16,7 @@ impl DataService {
         query: &String,
         limit: String,
         result_format: Option<String>,
-    ) -> Result<String, Error> {
+    ) -> Result<Vec<WsprSpot>, Error> {
         let client = reqwest::Client::new();
         let session = session_manager::SessionManager::new();
         let BASE_URL = session.BASE_URL.trim();
@@ -73,18 +73,17 @@ impl DataService {
                 }
             };
 
-            println!("\nparsed_data_block{:?} \n\n", spots);
-
             /*****************************
                [DEBUG] logs.
 
-               dbg!("{}", parsed_data);
-               dbg!("{}", data);
-               dbg!("{}", wspr_data);
+                dbg!("{}", parsed_data);
+                dbg!("{}", data);
+                dbg!("{}", wspr_data);
+                dbg!("{}", spots);
 
             *********************************/
 
-            Ok(wspr_data)
+            Ok(spots)
         } else {
             Err(anyhow::anyhow!(
                 "Request failed with status: {}",
