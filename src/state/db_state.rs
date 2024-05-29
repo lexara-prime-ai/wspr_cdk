@@ -1,3 +1,5 @@
+use super::prelude::WsprSpot;
+
 #[derive(Debug)]
 #[allow(non_snake_case)]
 pub struct ClickHouseState {
@@ -11,6 +13,10 @@ impl ClickHouseState {
             DATA: Vec::new(),
             STATUS: "Initialized".to_string(),
         }
+    }
+
+    pub async fn map_to_wspr_spots(&self) -> Vec<WsprSpot> {
+       todo!()
     }
 }
 

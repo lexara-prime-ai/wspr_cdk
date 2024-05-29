@@ -13,7 +13,12 @@ impl ClickHouseClient {
         ClickHouseState::new()
     }
 
-    pub async fn dispatch(state: &mut ClickHouseState, action: ClickHouseAction, limit: String) {
+    pub async fn dispatch(
+        state: &mut ClickHouseState,
+        action: ClickHouseAction,
+        limit: &str,
+        result_format: &str,
+    ) {
         state.reduce(&action);
 
         match action {
@@ -23,14 +28,19 @@ impl ClickHouseClient {
                 let query = "select * from wspr.rx where time > subtractHours(now(), 2) limit";
 
                 // Create [SERVICE] request.
-                let spot_data = data::DataService::GET_SPOT_DATA(&query.to_string(), limit)
-                    .await
-                    .unwrap();
+                let spot_data = data::DataService::GET_SPOT_DATA(
+                    &query.to_string(),
+                    limit.to_string(),
+                    Some(result_format.to_string()),
+                )
+                .await
+                .unwrap();
 
-                ////////////////////////////
-                /////// [DEBUG] logs. //////
-                dbg!("{}", spot_data.clone());
-
+                ///////////////////////////////////////
+                ////////// [DEBUG] logs. //////////////
+                //// dbg!("{}", spot_data.clone());////
+                ///////////////////////////////////////
+                ///////////////////////////////////////
                 state.DATA = vec![spot_data];
             }
             ClickHouseAction::GetById(id) => {

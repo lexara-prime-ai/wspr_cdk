@@ -11,7 +11,11 @@ pub struct DataService {
 
 impl DataService {
     // [GET] all "general" records from the [rx] table.
-    pub async fn GET_SPOT_DATA(query: &String, limit: String) -> Result<String, Error> {
+    pub async fn GET_SPOT_DATA(
+        query: &String,
+        limit: String,
+        result_format: Option<String>,
+    ) -> Result<String, Error> {
         let client = reqwest::Client::new();
         let session = session_manager::SessionManager::new();
         let BASE_URL = session.BASE_URL.trim();
@@ -19,7 +23,15 @@ impl DataService {
         let query = query_manager::QueryManager::new(query);
         let QUERY_STRING = format!("{}", query.QUERY);
 
-        let REQUEST = format!("{}?query={} {}", BASE_URL, QUERY_STRING, limit);
+        let FORMAT_OPTIONS = match result_format {
+            Some(format) => format,
+            None => String::from(""),
+        };
+
+        let REQUEST = format!(
+            "{}?query={} {} FORMAT {}",
+            BASE_URL, QUERY_STRING, limit, FORMAT_OPTIONS
+        );
 
         let response = client
             .get(REQUEST)
