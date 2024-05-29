@@ -8,6 +8,7 @@ pub struct SessionManager {
     pub SESSION_ID: i64,
 }
 
+/// Session initialization.
 impl SessionManager {
     pub fn new() -> Self {
         dotenv().ok();

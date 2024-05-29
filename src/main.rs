@@ -3,14 +3,13 @@
 use chrono::NaiveDateTime;
 use wspr::{services::prelude::*, state::prelude::*};
 
-fn main() {
-    let mut state = ClickHouseClient::init();
 
+#[tokio::main]
+async fn main() {
+    let mut state = ClickHouseClient::init();
     let session = session_manager::SessionManager::new();
 
-    println!("{:?}", session);
-
-    ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "10".to_string());
+    ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "10".to_string()).await;
     println!("\n[OUTPUT]: {:?}", state);
 
     // ClickHouseClient::dispatch(&mut state, ClickHouseAction::GetById(1));
