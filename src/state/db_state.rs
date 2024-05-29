@@ -15,9 +15,9 @@ impl ClickHouseState {
         }
     }
 
-    pub async fn map_to_wspr_spots(&self) -> Vec<WsprSpot> {
-       todo!()
-    }
+    // pub async fn parse_to_wspr_spots(&self) -> Vec<WsprSpot> {
+    //    todo!()
+    // }
 }
 
 impl Default for ClickHouseState {

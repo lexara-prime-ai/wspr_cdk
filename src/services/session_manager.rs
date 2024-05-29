@@ -26,3 +26,9 @@ impl SessionManager {
         }
     }
 }
+
+impl Default for SessionManager {
+    fn default() -> Self {
+        Self::new()
+    }
+}

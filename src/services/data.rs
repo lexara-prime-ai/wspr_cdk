@@ -2,7 +2,7 @@
 use anyhow::{Context, Error};
 use serde::{Deserialize, Serialize};
 
-use crate::services::prelude::*;
+use crate::{services::prelude::*, state::prelude::WsprSpot};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct DataService {
@@ -21,7 +21,7 @@ impl DataService {
         let BASE_URL = session.BASE_URL.trim();
 
         let query = query_manager::QueryManager::new(query);
-        let QUERY_STRING = format!("{}", query.QUERY);
+        let QUERY_STRING = query.QUERY;
 
         let FORMAT_OPTIONS = match result_format {
             Some(format) => format,
@@ -39,10 +39,51 @@ impl DataService {
             .await
             .context("Error sending request!")?;
 
-        // println!("{}", REQUEST);
+        // println!("{:?}", response);
+
         if response.status().is_success() {
             let wspr_data = response.text().await.context("Error parsing response!")?;
+
+            println!("\n{:?}\n", wspr_data);
+
+            let parsed_data: serde_json::Value = match serde_json::from_str(&wspr_data) {
+                Ok(data) => data,
+                Err(e) => {
+                    eprintln!("Error parsing JSON: {:?}", e);
+                    return Err(anyhow::anyhow!("Error parsing JSON: {:?}", e));
+                }
+            };
+
+            println!("{}", parsed_data);
+
+            // let data = &parsed_data["data"];
+
+            // println!("\nDATA(Value) {} \n", data);
+
+            // let wspr_spots: Vec<WsprSpot> = match serde_json::from_value(data.clone()) {
+            //     Ok(spots) => spots,
+            //     Err(e) => {
+            //         eprintln!("Error deserializing WsprSpot data: {:?}", e);
+            //         return Err(anyhow::anyhow!(
+            //             "Error deserializing WsprSpot data: {:?}",
+            //             e
+            //         ));
+            //     }
+            // };
+
+            // println!("\nparsed_data_block{:?} \n\n", wspr_spots);
+
+            /*****************************
+               [DEBUG] logs.
+
+               dbg!("{}", parsed_data);
+               dbg!("{}", data);
+               dbg!("{}", wspr_data);
+
+            *********************************/
+
             Ok(wspr_data)
+            // todo!()
         } else {
             Err(anyhow::anyhow!(
                 "Request failed with status: {}",

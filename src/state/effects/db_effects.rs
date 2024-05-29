@@ -36,16 +36,18 @@ impl ClickHouseClient {
                 .await
                 .unwrap();
 
+                // println!("{:?}", spot_data);
                 ///////////////////////////////////////
                 ////////// [DEBUG] logs. //////////////
                 //// dbg!("{}", spot_data.clone());////
                 ///////////////////////////////////////
                 ///////////////////////////////////////
-                state.DATA = vec![spot_data];
+                state.DATA = vec![spot_data.trim().to_string()];
             }
+            #[allow(unreachable_code)]
             ClickHouseAction::GetById(id) => {
                 println!("Fetching record with Id: {}", id.clone());
-                state.DATA = vec![format!("Entry with Id: {}", id.clone())];
+                state.DATA = todo!();
             }
         }
     }
