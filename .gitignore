@@ -1,7 +1,7 @@
 .vscode
 .terraform
 *.tfstate
-
+.env
 # Added by cargo
 
 /target
