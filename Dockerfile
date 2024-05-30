@@ -6,7 +6,7 @@ RUN cargo install cargo-chef --locked
 
 #----------------------------------------
 
-FROM chef:latest AS planner
+FROM chef AS planner
 
 COPY . .
 
@@ -14,7 +14,7 @@ RUN cargo chef prepare --recipe-path recipe.json
 
 #-------------------------------------------
 
-FROM chef:latest AS builder
+FROM chef AS builder
 
 COPY --from=planner /wspr_cdk/recipe.json recipe.json
 
