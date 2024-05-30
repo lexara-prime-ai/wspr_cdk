@@ -1,12 +1,18 @@
 # WSPR CDK
 
-`wspr_cdk` provides an abstraction for accessing and analyzing **WSPR** (*Weak Signal Propagation Reporter*) real-time spot data. This crate allows you to perform queries and fetch data from the WSPR database with ease.
+`wspr_cdk` provides an abstraction for accessing and analyzing **WSPR** (_Weak Signal Propagation Reporter_) real-time spot data. This crate allows you to perform queries and fetch data from the WSPR database with ease.
 
 ## Features
 
 -   Fetch **WSPR** spot data in various formats (**JSON**, **JSONCompact**, **JSONEachRow**)
 -   Easy integration with **Tokio** for asynchronous operations
 -   Abstractions to manage session state and dispatch actions to the **ClickHouse** client
+-   **Server component** for accessing and sharing real-time data via HTTP
+
+### Upcoming Features
+
+-   **Mutual TLS** for secure client-server communications
+-   **SSL (OpenSSL)** support for encrypted data transfer
 
 ## Installation
 
@@ -22,12 +28,12 @@ wspr_cdk = "0.0.2"
 Before using the crate, ensure you set the following environment variable:
 
 ```sh
-export BASE_URL=http://db1.wspr.live/
+`export BASE_URL=http://db1.wspr.live/
 ``` 
 
 ## Usage
 
-Here's an example of how to use the `wspr_cdk` crate:
+Here are some examples of how to use the `wspr_cdk` crate:
 
 ```rust
 #![allow(unused)]
@@ -47,13 +53,13 @@ async fn main() {
     // Print the state after fetching data
     println!("\n{:#?}\n", state);
 
-    // Example of fetching data by ID (commented out)
-    // ClickHouseClient::dispatch(&mut state, ClickHouseAction::GetById(1));
-    // println!("\n[OUTPUT]: {:?}", state);
+    // Example of fetching data by ID
+    ClickHouseClient::dispatch(&mut state, ClickHouseAction::GetById(1));
+    println!("\n[OUTPUT]: {:?}", state);
 
-    // Example of serializing response to JSON (commented out)
-    // let json_response = serde_json::to_string_pretty(&response).unwrap();
-    // println!("{}", json_response);
+    // Example of serializing response to JSON
+    let json_response = serde_json::to_string_pretty(&response).unwrap();
+    println!("{}", json_response);
 }
 ``` 
 
@@ -97,9 +103,58 @@ ClickHouseState {
 }
 ``` 
 
+## Server Component
+
+The server component allows you to access and share real-time WSPR data via HTTP. Below is a snippet of the server component source code:
+
+```rust
+#[macro_use]
+extern crate rocket;
+
+use anyhow::Error;
+use rocket::http::Status;
+use rocket::response::{content, status};
+use rocket::serde::json::Json;
+use serde::{Deserialize, Serialize};
+use std::result::Result::{Err, Ok};
+
+// Required [modules].
+use wspr_cdk::{services::prelude::*, state::prelude::*};
+
+/// Get all <wspr> spots.
+#[get("/api/spots")]
+async fn get_wspr_spots() -> Result<Json<Vec<WsprSpot>>, status::Custom<String>> {
+    let mut state = ClickHouseClient::init();
+    let _session = session_manager::SessionManager::new();
+
+    match ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "10", "JSON").await {
+        Ok(Some(spots)) => Ok(Json(spots)),
+        Ok(None) => Err(status::Custom(Status::NotFound, "No spots found".into())),
+        Err(e) => Err(status::Custom(
+            Status::InternalServerError,
+            format!("Failed to fetch spots: {:?}", e),
+        )),
+    }
+}
+
+#[launch]
+#[rocket::main]
+async fn rocket() -> _ {
+    rocket::build().mount("/", routes![get_wspr_spots])
+}
+``` 
+
+### Sample cURL Request
+
+To fetch WSPR spots using the server component, you can use the following cURL command:
+
+```sh
+curl -X GET http://localhost:8000/api/spots
+``` 
+
 ## WSPR Guidelines
 
-**Disclaimer**: The data shown here is the raw data as reported, saved, and published by *wsprnet.org*. Therefore, there might be **duplicates**, **false** spots, and other **errors** in the data. Keep this in mind when you see something strange. You are allowed to use the services provided on **wspr.live** for your own research and projects, as long as the results are accessible **free of charge for everyone**. You are **NOT** allowed to use this service for any ***commercial*** or ***profit-oriented*** use cases. The complete WSPR infrastructure is maintained by volunteers in their spare time, so there are no guarantees on the correctness, availability, or stability of these services.
+**Disclaimer**: The data shown here is the raw data as reported, saved, and published by _wsprnet.org_. Therefore, there might be **duplicates**, **false** spots, and other **errors** in the data. Keep this in mind when you see something strange. You are allowed to use the services provided on **wspr.live** for your own research and projects, as long as the results are accessible **free of charge for everyone**. You are **NOT** allowed to use this service for any _**commercial**_ or _**profit-oriented**_ use cases. The complete WSPR infrastructure is maintained by volunteers in their spare time, so there are no guarantees on the correctness, availability, or stability of these services.
 
 ## License
 
@@ -115,4 +170,4 @@ Special thanks to the WSPR community for providing access to the data and mainta
 
 ----------
 
-This documentation is also available as a crate on **crates.io**.
+This documentation is also available as a crate on [crates.io](https://crates.io/)
