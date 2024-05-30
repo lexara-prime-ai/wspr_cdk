@@ -2379,10 +2379,23 @@ dependencies = [
  "clickhouse",
  "dotenv",
  "reqwest",
+ "serde",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
+name = "wspr_cdk_server"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "dotenv",
  "rocket",
  "serde",
  "serde_json",
  "tokio",
+ "wspr_cdk",
 ]
 
 [[package]]

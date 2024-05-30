@@ -17,12 +17,12 @@ use wspr_cdk::{services::prelude::*, state::prelude::*};
 #[tokio::main]
 async fn main() {
     // Usage examples.
-    // let mut state = ClickHouseClient::init();
-    // let session = session_manager::SessionManager::new();
+    let mut state = ClickHouseClient::init();
+    let session = session_manager::SessionManager::new();
 
-    // ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "1", "JSON").await;
+    ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "1", "JSON").await;
 
-    // println!("\n{:#?}\n", state);
+    println!("\n{:#?}\n", state);
 
     // ClickHouseClient::dispatch(&mut state, ClickHouseAction::GetById(1));
     // println!("\n[OUTPUT]: {:?}", state);
