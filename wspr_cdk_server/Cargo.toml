@@ -1,0 +1,16 @@
+[package]
+name = "wspr_cdk_server"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+wspr_cdk = { path = "../"}
+anyhow = "1.0.86"
+chrono = { version = "0.4.38", features = ["serde"] }
+dotenv = "0.15.0"
+rocket = { version = "0.5.1", features = ["json"] }
+serde = { version = "1.0.203", features = ["derive"] }
+serde_json = "1.0.117"
+tokio = { version = "1.37.0", features = ["full"] }
