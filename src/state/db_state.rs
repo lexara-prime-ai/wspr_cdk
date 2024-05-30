@@ -4,14 +4,14 @@ use super::prelude::WsprSpot;
 
 #[derive(Debug)]
 pub struct ClickHouseState {
-    pub DATA: Vec<WsprSpot>,
+    pub DATA: Option<Vec<WsprSpot>>,
     pub STATUS: String,
 }
 
 impl ClickHouseState {
     pub fn new() -> Self {
         Self {
-            DATA: Vec::new(),
+            DATA: Some(Vec::new()),
             STATUS: "Initialized".to_string(),
         }
     }

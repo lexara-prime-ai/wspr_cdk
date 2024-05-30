@@ -2,7 +2,7 @@ use serde::de::{self, Deserializer};
 use serde::{Deserialize, Serialize};
 use std::result::Result;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct WsprSpot {
     #[serde(deserialize_with = "deserialize_id")]
     pub id: u64,

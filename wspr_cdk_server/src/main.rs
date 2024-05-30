@@ -1,7 +1,5 @@
 #![allow(non_snake_case)]
-
-#[macro_use]
-extern crate wspr_cdk;
+#![allow(unused)]
 
 #[macro_use]
 extern crate rocket;
@@ -19,17 +17,22 @@ use serde::{Deserialize, Serialize};
 use wspr_cdk::{services::prelude::*, state::prelude::*};
 
 /// Get all <wspr> spots.
-#[get("/spots")]
-async fn get_wspr_spots() {
+#[get("/api/spots")]
+async fn get_wspr_spots() -> Result<Json<Vec<WsprSpot>>, status::Custom<String>> {
     let mut state = ClickHouseClient::init();
-    let session = session_manager::SessionManager::new();
-
-    ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "1", "JSON").await;
-
-    // [DEBUG] logs.
-    dbg!("\n{:#?}\n", state);
-
-    // todo!()
+    let _session = session_manager::SessionManager::new();
+    /////////////////////////////////////
+    /////////// [DEBUG] logs. ///////////
+    //// dbg!("\n{:#?}\n", state); //////
+    /////////////////////////////////////
+    match ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "10", "JSON").await {
+        Ok(Some(spots)) => Ok(Json(spots)),
+        Ok(None) => Err(status::Custom(Status::NotFound, "No spots found".into())),
+        Err(e) => Err(status::Custom(
+            Status::InternalServerError,
+            format!("Failed to fetch spots: {:?}", e),
+        )),
+    }
 }
 
 #[launch]
