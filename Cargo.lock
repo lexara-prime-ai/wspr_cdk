@@ -1607,7 +1607,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "wspr"
+name = "wspr_cdk"
 version = "0.0.1"
 dependencies = [
  "anyhow",
