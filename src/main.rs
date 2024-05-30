@@ -12,7 +12,7 @@
 #![allow(unused)]
 
 use chrono::NaiveDateTime;
-use wspr::{services::prelude::*, state::prelude::*};
+use wspr_cdk::{services::prelude::*, state::prelude::*};
 
 #[tokio::main]
 async fn main() {
