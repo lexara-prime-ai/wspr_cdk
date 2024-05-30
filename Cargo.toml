@@ -1,5 +1,5 @@
 [package]
-name = "wspr"
+name = "wspr_cdk"
 version = "0.0.1"
 edition = "2021"
 authors = ["Irfan Ghat"]
