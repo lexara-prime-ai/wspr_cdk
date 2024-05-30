@@ -14,7 +14,7 @@ To use this crate, add `wspr_cdk` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-wspr-client-rust = "0.1.0"
+wspr_cdk = "0.0.2"
 ``` 
 
 ## Environment Variable
