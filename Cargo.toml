@@ -1,6 +1,6 @@
 [package]
 name = "wspr_cdk"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 authors = ["Irfan Ghat"]
 description = "This crate provides an abstraction that allows you to do analysis on wspr's real time spot data."
@@ -8,7 +8,7 @@ homepage = "https://github.com/lexara-prime-ai/wspr_cdk"
 repository = "https://github.com/lexara-prime-ai/wspr_cdk"
 readme = "README.md"
 keywords = ["radio", "web", "http", "api"]
-categories = ["cdk"]
+categories = ["web-programming::http-server", "science::geo"]
 license = "MIT"
 
 
