@@ -1,4 +1,4 @@
-FROM rust:latest
+FROM rust:latest AS chef
 
 WORKDIR /wspr_cdk
 
