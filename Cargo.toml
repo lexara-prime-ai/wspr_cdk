@@ -10,7 +10,7 @@ repository = "https://github.com/lexara-prime-ai/wspr_cdk"
 readme = "README.md"
 keywords = ["radio", "web", "http", "api"]
 categories = ["web-programming::http-server", "science::geo"]
-license = "BSD 3-Clause License"
+license = "BSD-1-Clause"
 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
