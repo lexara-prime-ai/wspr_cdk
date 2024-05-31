@@ -1,7 +1,7 @@
 workspace = { members = ["wspr_cdk_server"] }
 [package]
 name = "wspr_cdk"
-version = "0.0.3"
+version = "0.0.4"
 edition = "2021"
 authors = ["Irfan Ghat"]
 description = "This crate provides an abstraction that allows you to do analysis on wspr's real time spot data."
@@ -10,7 +10,7 @@ repository = "https://github.com/lexara-prime-ai/wspr_cdk"
 readme = "README.md"
 keywords = ["radio", "web", "http", "api"]
 categories = ["web-programming::http-server", "science::geo"]
-license = "BSD 3-Clause License"
+license = "BSD-1-Clause"
 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
