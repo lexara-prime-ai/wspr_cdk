@@ -20,7 +20,7 @@ To use this crate, add `wspr_cdk` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-wspr_cdk = "0.0.2"
+wspr_cdk = "0.0.4"
 ``` 
 
 ## Environment Variable
@@ -28,7 +28,7 @@ wspr_cdk = "0.0.2"
 Before using the crate, ensure you set the following environment variable:
 
 ```sh
-`export BASE_URL=http://db1.wspr.live/
+export BASE_URL=http://db1.wspr.live/
 ``` 
 
 ## Usage
@@ -66,6 +66,8 @@ async fn main() {
 ### Example Query
 
 ```sh
+
+Copy code
 wget -q -O - "http://db1.wspr.live/?query=SELECT * FROM wspr.rx LIMIT 5 FORMAT JSON;"
 ``` 
 
@@ -152,9 +154,43 @@ To fetch WSPR spots using the server component, you can use the following cURL c
 curl -X GET http://localhost:8000/api/spots
 ``` 
 
+## Client-Side Usage Example
+
+You can also fetch WSPR data using client-side JavaScript. Here is a sample implementation:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WSPR Spots</title>
+</head>
+<body>
+    <div id="demo"></div>
+
+    <script> const content = document.getElementById("demo");
+
+        async function getData() {
+            let response = await fetch("http://localhost:8000/api/spots");
+            let raw = await response.json();
+
+            for (let i of raw) {
+                console.log(i);
+                content.innerHTML += `
+                    <h2>Spot id: ${i.id}</h2>
+                    <p>Time: ${i.time}</p>
+                    <p>Band: ${i.band}</p>
+                `;
+            }
+        }
+
+        getData(); </script>
+</body>
+</html>
+``` 
+
 ## WSPR Guidelines
 
-**Disclaimer**: The data shown here is the raw data as reported, saved, and published by _wsprnet.org_. Therefore, there might be **duplicates**, **false** spots, and other **errors** in the data. Keep this in mind when you see something strange. You are allowed to use the services provided on **wspr.live** for your own research and projects, as long as the results are accessible **free of charge for everyone**. You are **NOT** allowed to use this service for any _**commercial**_ or _**profit-oriented**_ use cases. The complete WSPR infrastructure is maintained by volunteers in their spare time, so there are no guarantees on the correctness, availability, or stability of these services.
+**Disclaimer**: The dataset contains the raw **spot** data as reported, saved, and published by _wsprnet.org_. Therefore, there might be **duplicates**, **false** spots, and other **errors** in the data. Keep this in mind when you see something strange. You are allowed to use the services provided on **wspr.live** for your own research and projects, as long as the results are accessible **free of charge for everyone**. You are **NOT** allowed to use this service for any _**commercial**_ or _**profit-oriented**_ use cases. The complete WSPR infrastructure is maintained by volunteers in their spare time, so there are no guarantees on the correctness, availability, or stability of these services.
 
 ## License
 
