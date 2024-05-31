@@ -4,6 +4,16 @@
 #[macro_use]
 extern crate rocket;
 
+////////////////////////////////////
+/////// [CORS] dependencies ////////
+////////////////////////////////////
+use rocket::fairing::{Fairing, Info, Kind};
+use rocket::http::Header;
+use rocket::{Request, Response};
+
+//////////////////////////////////////
+/////// [rocket] dependencies ////////
+//////////////////////////////////////
 use rocket::http::Status;
 use rocket::launch;
 use rocket::response::{content, status};
@@ -15,6 +25,37 @@ use serde::{Deserialize, Serialize};
 
 // Required [modules].
 use wspr_cdk::{services::prelude::*, state::prelude::*};
+
+// [CORS] setup.
+pub struct CORS;
+
+#[rocket::async_trait]
+impl Fairing for CORS {
+    fn info(&self) -> Info {
+        Info {
+            name: "Add [CORS] headers to <responses>",
+            kind: Kind::Response,
+        }
+    }
+
+    async fn on_response<'r>(&self, req: &'r Request<'_>, res: &mut Response<'r>) {
+        res.set_header(Header::new("Access-Control-Allow-Origin", "*"));
+        res.set_header(Header::new(
+            "Access-Control-Allow-Methods",
+            "POST, PATCH, PUT, DELETE, HEAD, OPTIONS, GET",
+        ));
+        res.set_header(Header::new("Access-Control-Allow-Headers", "*"));
+        res.set_header(Header::new("Access-Control-Allow-Credentials", "true"));
+        res.set_header(Header::new(
+            "Content-Security-Policy",
+            "default-src 'self'; connect-src 'self' http://localhost:8000",
+        ));
+    }
+}
+
+// Handle [RESPONSE] to preflight [REQUESTS].
+#[rocket::options("/<_route_args..>")]
+pub fn options(_route_args: Option<std::path::PathBuf>) {}
 
 /// Get all <wspr> spots.
 #[get("/api/spots")]
@@ -38,7 +79,9 @@ async fn get_wspr_spots() -> Result<Json<Vec<WsprSpot>>, status::Custom<String>>
 #[launch]
 #[rocket::main]
 async fn rocket() -> _ {
-    rocket::build().mount("/", routes![get_wspr_spots])
+    rocket::build()
+        .attach(CORS)
+        .mount("/", routes![options, get_wspr_spots])
 }
 
 /*
