@@ -22,8 +22,15 @@ RUN cargo chef cook --release --recipe-path recipe.json
 
 COPY . .
 
-RUN cargo build --release
+ENV ROCKET_ADDRESS=0.0.0.0
+ENV ROCKET_PORT=8000
+
+RUN cargo build --workspace --release
 
 #------------------------------------
 
-EXPOSE 8080
+CMD [ "./target/release/wspr_cdk_server"]
+
+#------------------------------------
+
+EXPOSE 8000
