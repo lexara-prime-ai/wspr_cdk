@@ -16,7 +16,7 @@ impl SessionManager {
         let timestamp = chrono::Utc::now().timestamp();
 
         let BASE_URL = std::env::var_os("BASE_URL")
-            .expect("[BASE_URL] not found!")
+            .expect("[BASE_URL] not found, check [ENVIRONMENT VARIABLES]!")
             .into_string()
             .unwrap();
 
