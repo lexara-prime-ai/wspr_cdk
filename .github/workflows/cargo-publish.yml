@@ -38,13 +38,18 @@ jobs:
         run: |
           if [ "${{ env.current_version }}" == "${{ env.latest_version }}" ]; then
             echo "Version is already published."
-            exit 1
+            echo "should_publish=false" >> $GITHUB_ENV
           else
             echo "New version detected."
+            echo "should_publish=true" >> $GITHUB_ENV
           fi
 
       - name: Publish to crates.io
-        if: steps.compare_versions.outcome == 'success'
+        if: env.should_publish == 'true'
         run: 'cargo publish --token ${CRATES_IO_TOKEN}'
         env:
           CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+
+      - name: Skip publishing
+        if: env.should_publish == 'false'
+        run: echo "Skipping publish as the version is already up to date."
