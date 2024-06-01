@@ -66,10 +66,8 @@ async fn main() {
 ### Example Query
 
 ```sh
-
-Copy code
-wget -q -O - "http://db1.wspr.live/?query=SELECT * FROM wspr.rx LIMIT 5 FORMAT JSON;"
-``` 
+wget -q -O - "http://db1.wspr.live/?query=SELECT * FROM wspr.rx LIMIT 5 FORMAT JSON;"`
+`` 
 
 ### Sample Output
 
@@ -166,9 +164,8 @@ You can also fetch WSPR data using client-side JavaScript. Here is a sample impl
 </head>
 <body>
     <div id="demo"></div>
-
+    
     <script> const content = document.getElementById("demo");
-
         async function getData() {
             let response = await fetch("http://localhost:8000/api/spots");
             let raw = await response.json();
@@ -182,8 +179,8 @@ You can also fetch WSPR data using client-side JavaScript. Here is a sample impl
                 `;
             }
         }
-
-        getData(); </script>
+        getData(); 
+   </script>
 </body>
 </html>
 ``` 
@@ -204,6 +201,16 @@ Contributions are **welcome**! Please submit issues or pull requests as needed. 
 
 Special thanks to the WSPR community for providing access to the data and maintaining the infrastructure.
 
-----------
+## Docker Image
+
+The `wspr_cdk` is also available as a Docker image:
+
+```sh
+docker pull lexaraprime/wspr_cdk:master
+``` 
+
+You can find it on Docker Hub: [lexaraprime/wspr_cdk](https://hub.docker.com/layers/lexaraprime/wspr_cdk/master/images/sha256-c869961d9a8413bf8ee562c3507632aeaa4b6e720a97792e7eef5ad984437872?context=repo)
+
+---------------------------------
 
 This documentation is also available as a crate on [crates.io](https://crates.io/)
