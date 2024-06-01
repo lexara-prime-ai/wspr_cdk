@@ -20,7 +20,7 @@ To use this crate, add `wspr_cdk` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-wspr_cdk = "0.0.5"
+wspr_cdk = "0.0.6"
 ``` 
 
 ## Environment Variable
