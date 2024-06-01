@@ -57,6 +57,16 @@ impl Fairing for CORS {
 #[rocket::options("/<_route_args..>")]
 pub fn options(_route_args: Option<std::path::PathBuf>) {}
 
+#[catch(500)]
+fn internal_error() -> &'static str {
+    "Internal Server Error. Please try again later."
+}
+
+#[catch(404)]
+fn not_found() -> &'static str {
+    "Resource not found. Please check the URL."
+}
+
 /// Get all <wspr> spots.
 #[get("/api/spots")]
 async fn get_wspr_spots() -> Result<Json<Vec<WsprSpot>>, status::Custom<String>> {
@@ -82,6 +92,7 @@ async fn rocket() -> _ {
     rocket::build()
         .attach(CORS)
         .mount("/", routes![options, get_wspr_spots])
+        .register("/", catchers![internal_error, not_found])
 }
 
 /*
