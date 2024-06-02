@@ -1,21 +1,12 @@
-# from typing import Union
+import asyncio
 
-# from fastapi import FastAPI
-
-# server = FastAPI()
+import python_wrapper.python_wrapper
 
 
-# @server.get("/")
-# def read_root():
-#     return { "Allahu": "Akbar" }
+async def main():
+    output = await python_wrapper.python_wrapper.get_wspr_spots("10", "JSON")
+    print("Output: ", output)
 
 
-# @server.get("/items/{item_id}")
-# def read_item(item_id: int, q: Union[str, None] = None):
-#     return {"item_id": item_id, "q": q}
-
-import python_wrapper;
-
-output = python_wrapper.sum_as_string(6, 9)
-
-print('Output: ', output)
+if __name__ == "__main__":
+    asyncio.run(main())
