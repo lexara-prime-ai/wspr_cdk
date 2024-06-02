@@ -16,6 +16,7 @@ RUN cargo chef prepare --recipe-path recipe.json
 
 FROM chef AS builder
 
+# Install python 3.11 development files.
 RUN apt-get update && \
     apt-get install -y python3.11-dev && \
     apt-get clean
