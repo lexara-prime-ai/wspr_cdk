@@ -16,6 +16,10 @@ RUN cargo chef prepare --recipe-path recipe.json
 
 FROM chef AS builder
 
+RUN apt-get update && \
+    apt-get install -y python3.11-dev && \
+    apt-get clean
+
 COPY --from=planner /wspr_cdk/recipe.json recipe.json
 
 RUN cargo chef cook --release --recipe-path recipe.json
