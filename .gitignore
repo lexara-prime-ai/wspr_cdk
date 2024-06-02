@@ -5,4 +5,4 @@
 # Added by cargo
 
 /target
-/hyper/hyper/__pycache__
+/**/hyper/hyper/__pycache__
