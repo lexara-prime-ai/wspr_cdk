@@ -9,7 +9,7 @@ name = "python_wrapper"
 crate-type = ["cdylib"]
 
 [dependencies]
-wspr_cdk = { path = "../"}
+wspr_cdk = { path = "../" }
 pyo3 = "0.20.0"
 pyo3-asyncio = { version = "0.20", features = ["tokio-runtime"] }
 tokio = "1.9"
