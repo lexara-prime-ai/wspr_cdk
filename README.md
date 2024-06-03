@@ -67,7 +67,7 @@ async fn main() {
 
 ```sh
 wget -q -O - "http://db1.wspr.live/?query=SELECT * FROM wspr.rx LIMIT 5 FORMAT JSON;"`
-`` 
+``` 
 
 ### Sample Output
 
