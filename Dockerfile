@@ -17,6 +17,7 @@ RUN cargo chef prepare --recipe-path recipe.json
 FROM chef AS builder
 
 # Install python 3.11 development files.
+# To do -> Run scripts to install additional dependencies e.g [mkdocs], [tableauhyperapi] etc.
 RUN apt-get update && \
     apt-get install -y python3.11-dev && \
     apt-get clean
