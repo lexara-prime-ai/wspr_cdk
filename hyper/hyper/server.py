@@ -16,7 +16,7 @@ class Server:
             Args: self.
             return type: ()
         """
-        output = await python_wrapper.python_wrapper.get_wspr_spots("10000", "JSON")
+        output = await python_wrapper.python_wrapper.get_wspr_spots("10", "JSON")
         data = output.get_data()
 
         # Display data that's being fetched for [DEBUG] purposes.

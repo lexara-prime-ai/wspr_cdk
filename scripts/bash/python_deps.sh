@@ -14,8 +14,9 @@ else
 fi
 
 # Install mkdocs
-echo "Installing mkdocs..."
+echo "Installing dependencies [mkdocs], [tableauhyperapi]..."
 pip install mkdocs
+pip install tableauhyperapi
 
 # Verify installation
 echo "Verifying mkdocs installation..."
@@ -23,4 +24,11 @@ if python3 -c "import mkdocs" &> /dev/null; then
     echo "mkdocs successfully installed."
 else
     echo "Failed to install mkdocs."
+fi
+
+echo "Verifying tableauhyperapi installation..."
+if python3 -c "import tableauhyperapi" &> /dev/null; then
+    echo "tableauhyperapi successfully installed."
+else
+    echo "Failed to install tableauhyperapi."
 fi
