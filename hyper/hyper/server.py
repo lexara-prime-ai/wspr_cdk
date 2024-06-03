@@ -4,8 +4,8 @@ import python_wrapper.python_wrapper
 
 
 async def main():
-    output = await python_wrapper.python_wrapper.get_wspr_spots("10", "JSON")
-    print("Output: ", output)
+    output = await python_wrapper.python_wrapper.get_wspr_spots("1", "JSON")
+    print("Output: ", output.get_data())
 
 
 if __name__ == "__main__":
