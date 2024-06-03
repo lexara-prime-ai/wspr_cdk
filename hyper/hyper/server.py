@@ -1,12 +1,57 @@
 import asyncio
+import csv
+import os
 
 import python_wrapper.python_wrapper
+import constants
 
 
 class Server:
-    async def main(self):
-        output = await python_wrapper.python_wrapper.get_wspr_spots("10", "JSON")
+    def __init__(self):
+        self.write_path = os.path.join(
+            constants.CONSTANTS.FILE_PATH, 'wspr_spot_data.csv')
+
+    async def write_to_csv(self):
+        """
+            Args: self.
+            return type: ()
+        """
+        output = await python_wrapper.python_wrapper.get_wspr_spots("100", "JSON")
         data = output.get_data()
+
+        # Display data that's being fetched for [DEBUG] purposes.
+        await self.display_data(data)
+
+        # Write data to csv. -> <wspr_spots.csv>
+        write_path = self.write_path
+        print('\nWrite path: \n', write_path)
+
+        # Check if directory exists.
+        if not os.path.exists(constants.CONSTANTS.FILE_PATH):
+            os.makedirs(constants.CONSTANTS.FILE_PATH)
+
+        with open(write_path, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([
+                'ID', 'Time', 'Band', 'RX Sign', 'RX Lat', 'RX Lon', 'RX Loc',
+                'TX Sign', 'TX Lat', 'TX Lon', 'TX Loc', 'Distance', 'Azimuth',
+                'RX Azimuth', 'Frequency', 'Power', 'SNR', 'Drift', 'Version', 'Code'
+            ])
+
+            for record in data:
+                writer.writerow([
+                    record['id'], record['time'], record['band'], record['rx_sign'],
+                    record['rx_lat'], record['rx_lon'], record['rx_loc'], record['tx_sign'],
+                    record['tx_lat'], record['tx_lon'], record['tx_loc'], record['distance'],
+                    record['azimuth'], record['rx_azimuth'], record['frequency'],
+                    record['power'], record['snr'], record['drift'], record['version'], record['code']
+                ])
+
+    async def display_data(self, data):
+        """
+            Args: self, data -> WsprSpot dict.
+            return type: ()
+        """
         for record in data:
             id_field = record['id']
             time_field = record['time']
@@ -30,6 +75,8 @@ class Server:
             code_field = record['code']
 
             # Verify content.
+            print("\nFetching [ROW] >\n")
+
             print("ID:", id_field)
             print("Time:", time_field)
             print("Band:", band_field)
@@ -50,10 +97,9 @@ class Server:
             print("Drift:", drift_field)
             print("Version:", version_field)
             print("Code:", code_field)
-            print("---")
 
     async def __call__(self):
-        await self.main()
+        await self.write_to_csv()
 
 
 server = Server()
