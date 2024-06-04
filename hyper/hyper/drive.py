@@ -22,7 +22,7 @@ def upload_to_drive(file_path):
         service = build("drive", "v3", credentials=credentials)
 
         file_metadata = {
-            "name": "wspr_spot_data",
+            "name": "wspr_spot_data.csv",
             "parents": [constants.PARENT_FOLDER_ID],
         }
 
