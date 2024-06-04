@@ -3,15 +3,14 @@ import csv
 import os
 
 import constants
+import drive
 
 import python_wrapper.python_wrapper
 
 
 class Server:
     def __init__(self):
-        self.write_path = os.path.join(
-            constants.CONSTANTS.FILE_PATH, "wspr_spot_data.csv"
-        )
+        self.write_path = os.path.join(constants.FILE_PATH, "wspr_spot_data.csv")
 
     async def write_to_csv(self):
         """
@@ -20,7 +19,7 @@ class Server:
         """
 
         try:
-            output = await python_wrapper.python_wrapper.get_wspr_spots("10", "JSON")
+            output = await python_wrapper.python_wrapper.get_wspr_spots("1000", "JSON")
             data = output.get_data()
 
             # Display data that's being fetched for [DEBUG] purposes.
@@ -31,8 +30,8 @@ class Server:
             print("\nWrite path: \n", write_path)
 
             # Check if directory exists.
-            if not os.path.exists(constants.CONSTANTS.FILE_PATH):
-                os.makedirs(constants.CONSTANTS.FILE_PATH)
+            if not os.path.exists(constants.FILE_PATH):
+                os.makedirs(constants.FILE_PATH)
 
             with open(write_path, mode="w", newline="") as file:
                 writer = csv.writer(file)
@@ -86,6 +85,9 @@ class Server:
                             record["code"],
                         ]
                     )
+
+            # Upload [output] file to Google Drive.
+            drive.upload_to_drive(constants.FULL_PATH)
         except Exception as e:
             print("An [ERROR] occurred: ", e)
 
