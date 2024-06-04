@@ -41,8 +41,7 @@ for module in "${!module_import_map[@]}"; do
 done
 
 
-# An array modules contains the names of all the modules to be installed.
-# The pip install command installs or upgrades all the modules listed in the array.
-# A dictionary module_import_map maps module names to their respective import names.
+# The [modules] array contains the names of all the modules to be installed.
+# The [dictionary] [module_import_map] maps module names to their respective import names.
 # The verify_installation function takes a module name and its import name as arguments, checks if the module can be imported, and prints the appropriate message.
 # The script iterates over the module_import_map dictionary to verify the installation of each module using the verify_installation function.
