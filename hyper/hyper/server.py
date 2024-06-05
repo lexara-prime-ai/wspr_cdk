@@ -19,7 +19,7 @@ class Server:
         """
 
         try:
-            output = await python_wrapper.python_wrapper.get_wspr_spots("10000", "JSON")
+            output = await python_wrapper.python_wrapper.get_wspr_spots("100000", "JSON")
             data = output.get_data()
 
             # Display data that's being fetched for [DEBUG] purposes.

@@ -8,8 +8,9 @@ else
 	echo "pip is already installed."
 fi
 
+
 # Modules that will be installed/upgraded.
-modules=("mkdocs" "tableauhyperapi" "google-api-python-client" "google-auth-httplib2" "google-auth-oauthlib")
+modules=("mkdocs" "maturin" "tableauhyperapi" "google-api-python-client" "google-auth-httplib2" "google-auth-oauthlib")
 
 echo "Installing dependencies: ${modules[*]}..."
 pip install "${modules[@]}" --upgrade
@@ -29,6 +30,7 @@ verify_installation() {
 # The following dictionary contains module to import name mappings.
 declare -A module_import_map=(
 	["mkdocs"]="mkdocs"
+	["maturin"]="maturin"
 	["tableauhyperapi"]="tableauhyperapi"
 	["google-api-python-client"]="googleapiclient"
 	["google-auth-httplib2"]="google_auth_httplib2"
@@ -39,7 +41,6 @@ declare -A module_import_map=(
 for module in "${!module_import_map[@]}"; do
 	verify_installation "${module}" "${module_import_map[${module}]}"
 done
-
 
 # The [modules] array contains the names of all the modules to be installed.
 # The [dictionary] [module_import_map] maps module names to their respective import names.
