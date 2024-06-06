@@ -20,12 +20,16 @@ FROM chef AS builder
 
 # Install python 3.11 development files and virtual environment tools
 RUN apt-get update --no-install-recommends && \
-    apt-get install -y python3.11-dev python3.11-venv --no-install-recommends && \
+    apt-get install libclang-dev -y && \
+    apt-get install -y python3-dev python3-venv --no-install-recommends && \
     apt-get clean --no-install-recommends
 
-# Create and activate a virtual environment.
-RUN python3.11 -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
+
+# Copy the prepared recipe.json from the [planner] stage.
+COPY --from=planner /wspr_cdk/recipe.json recipe.json
+
+# Cook the dependencies according to the recipe.
+RUN cargo chef cook --release --recipe-path recipe.json
 
 # Copy [python_deps] script to manage dependencies.
 # The script currently installs the following dependencies:
@@ -33,18 +37,14 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 COPY scripts/bash/python_deps.sh /scripts/bash/python_deps.sh
 
+# Create and activate a virtual environment.
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+ENV VIRTUAL_ENV=/opt/venv
+
 # Modify script permissions.
 RUN chmod +x /scripts/bash/python_deps.sh
-
-RUN python3 -m venv .venv
-
 RUN /scripts/bash/python_deps.sh
-
-# Copy the prepared recipe.json from the [planner] stage.
-COPY --from=planner /wspr_cdk/recipe.json recipe.json
-
-# Cook the dependencies according to the recipe.
-RUN cargo chef cook --release --recipe-path recipe.json
 
 COPY . .
 
@@ -58,7 +58,8 @@ RUN cargo build --workspace --release
 #------------------------------------
 
 # [CURRENT] entry point.
-CMD ["./target/release/wspr_cdk_server"]
+# Run maturin develop during container initialization
+ENTRYPOINT ["/bin/bash", "-c", ". /opt/venv/bin/activate && maturin develop -m python_wrapper/Cargo.toml && ./target/release/wspr_cdk_server"]
 
 #------------------------------------
 

@@ -10,7 +10,7 @@ fi
 
 
 # Modules that will be installed/upgraded.
-modules=("mkdocs" "maturin" "tableauhyperapi" "google-api-python-client" "google-auth-httplib2" "google-auth-oauthlib")
+modules=("mkdocs" "maturin" "patchelf" "tableauhyperapi" "google-api-python-client" "google-auth-httplib2" "google-auth-oauthlib")
 
 echo "Installing dependencies: ${modules[*]}..."
 pip install "${modules[@]}" --upgrade
@@ -31,6 +31,7 @@ verify_installation() {
 declare -A module_import_map=(
 	["mkdocs"]="mkdocs"
 	["maturin"]="maturin"
+	["patchelf"]="patchelf"
 	["tableauhyperapi"]="tableauhyperapi"
 	["google-api-python-client"]="googleapiclient"
 	["google-auth-httplib2"]="google_auth_httplib2"
