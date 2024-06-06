@@ -2,6 +2,34 @@
 
 `wspr_cdk` provides an abstraction for accessing and analyzing **WSPR** (_Weak Signal Propagation Reporter_) real-time spot data. This crate allows you to perform queries and fetch data from the WSPR database with ease.
 
+## Prerequisites
+
+When running the application, ensure that the `service_account.json` file has been set up correctly. This file contains the authentication _credentials_ needed to access the **Google Drive API**.
+
+- If this file is _missing_ or _incorrectly configured_, you will encounter an authentication error when attempting to upload files to Google Drive.
+
+Here's a step-by-step guide to ensure proper setup:
+
+1.  **Create a Service Account**:
+    - Go to the Google Cloud Console.
+    - Navigate to the IAM & Admin > Service Accounts page.
+    - Click "Create Service Account".
+    - Fill out the necessary details and click "Create".
+2.  **Generate a JSON Key**:
+
+    - After creating the service account, click on the service account you created.
+    - Go to the "Keys" tab.
+    - Click "Add Key", then select "Create new key".
+    - Choose **JSON** as the key type and click "Create". This will download a JSON file containing your credentials.
+
+3.  **Provide Necessary Permissions**:
+    - Ensure that the service account has the required permissions to access Google Drive. You can grant the necessary permissions by assigning the appropriate roles to the service account.
+4.  **Configure Environment**:
+    - Place the downloaded `service_account.json` file in the appropriate location accessible to your application. Ensure that the file is named exactly `service_account.json`.
+    - If running the application in a Docker container, make sure the `service_account.json` file is _mounted_ into the container at runtime.
+
+These steps should ensure that the `service_account.json` file is correctly set up, thus allowing the `server` module to **authenticate** with Google Cloud successfully and avoid encountering the authentication _error mentioned_.
+
 ### Usage
 
 - To run the **Python** server, use:
