@@ -20,12 +20,12 @@ impl ClickHouseStateWrapper {
     }
 
     /*
-        The '__repr__'  method will provide a meaningful [string] representaion
+        The '__repr__'  method will provide a meaningful [string] representation
         for the ClickHouseState, python <object>.
 
         ...........................................................................
 
-        The '__str__'  method will provide a user-friendly [string] representaion
+        The '__str__'  method will provide a user-friendly [string] representation
         for the ClickHouseState, python <object>.
     */
     fn __repr__(&self) -> String {
@@ -99,7 +99,8 @@ fn get_wspr_spots(py: Python, limit: String, result_format: String) -> PyResult<
 
 /// The <wspr_cdk> python module, implemented in Rust.
 #[pymodule]
-fn python_wrapper(_py: Python, m: &PyModule) -> PyResult<()> {
+fn python_wrapper(py: Python, m: &PyModule) -> PyResult<()> {
+    m.add_class::<ClickHouseStateWrapper>()?;
     m.add_function(wrap_pyfunction!(get_wspr_spots, m)?)?;
     Ok(())
 }
