@@ -1,3 +1,4 @@
+import argparse
 import asyncio
 import csv
 import os
@@ -9,8 +10,9 @@ import python_wrapper.python_wrapper
 
 
 class Server:
-    def __init__(self):
-        self.write_path = os.path.join(constants.FILE_PATH, "wspr_spot_data.csv")
+    def __init__(self, interval):
+        self.write_path = os.path.join(constants.FILE_PATH, constants.FILE_NAME)
+        self.interval = interval
 
     async def write_to_csv(self):
         """
@@ -19,7 +21,7 @@ class Server:
         """
 
         try:
-            output = await python_wrapper.python_wrapper.get_wspr_spots("100000", "JSON")
+            output = await python_wrapper.python_wrapper.get_wspr_spots("10", "JSON")
             data = output.get_data()
 
             # Display data that's being fetched for [DEBUG] purposes.
@@ -143,10 +145,20 @@ class Server:
             print("Code:", code_field)
 
     async def __call__(self):
-        await self.write_to_csv()
+        while True:
+            await self.write_to_csv()
+            await asyncio.sleep(self.interval)
 
 
-server = Server()
+def parse_args():
+    parser = argparse.ArgumentParser(description="WSPR Spot Data Server")
+    parser.add_argument(
+        "--interval", type=int, default=900, help="Sleep interval in seconds"
+    )
+    return parser.parse_args()
+
 
 if __name__ == "__main__":
+    args = parse_args()
+    server = Server(args.interval)
     asyncio.run(server())

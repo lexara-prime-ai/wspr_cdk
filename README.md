@@ -2,17 +2,31 @@
 
 `wspr_cdk` provides an abstraction for accessing and analyzing **WSPR** (_Weak Signal Propagation Reporter_) real-time spot data. This crate allows you to perform queries and fetch data from the WSPR database with ease.
 
+### Usage
+
+- To run the **Python** server, use:
+
+```sh
+docker run -it wspr_cdk python ./hyper/hyper/server.py --interval 5
+```
+
+- To run the **Rust** server, use:
+
+```sh
+docker run -e ROCKET_ADDRESS=0.0.0.0 -e ROCKET_PORT=8000 -it wspr_cdk rust
+```
+
 ## Features
 
--   Fetch **WSPR** spot data in various formats (**JSON**, **JSONCompact**, **JSONEachRow**)
--   Easy integration with **Tokio** for asynchronous operations
--   Abstractions to manage session state and dispatch actions to the **ClickHouse** client
--   **Server component** for accessing and sharing real-time data via HTTP
+- Fetch **WSPR** spot data in various formats (**JSON**, **JSONCompact**, **JSONEachRow**)
+- Easy integration with **Tokio** for asynchronous operations
+- Abstractions to manage session state and dispatch actions to the **ClickHouse** client
+- **Server component** for accessing and sharing real-time data via HTTP
 
 ### Upcoming Features
 
--   **Mutual TLS** for secure client-server communications
--   **SSL (OpenSSL)** support for encrypted data transfer
+- **Mutual TLS** for secure client-server communications
+- **SSL (OpenSSL)** support for encrypted data transfer
 
 ## Installation
 
@@ -21,7 +35,7 @@ To use this crate, add `wspr_cdk` to your `Cargo.toml`:
 ```toml
 [dependencies]
 wspr_cdk = "0.0.8"
-``` 
+```
 
 ## Environment Variable
 
@@ -29,7 +43,7 @@ Before using the crate, ensure you set the following environment variable:
 
 ```sh
 export BASE_URL=http://db1.wspr.live/
-``` 
+```
 
 ## Usage
 
@@ -61,13 +75,13 @@ async fn main() {
     let json_response = serde_json::to_string_pretty(&response).unwrap();
     println!("{}", json_response);
 }
-``` 
+```
 
 ### Example Query
 
 ```sh
 wget -q -O - "http://db1.wspr.live/?query=SELECT * FROM wspr.rx LIMIT 5 FORMAT JSON;"`
-``` 
+```
 
 ### Sample Output
 
@@ -101,7 +115,7 @@ ClickHouseState {
     ],
     STATUS: "Fetching all records.",
 }
-``` 
+```
 
 ## Server Component
 
@@ -142,7 +156,7 @@ async fn get_wspr_spots() -> Result<Json<Vec<WsprSpot>>, status::Custom<String>>
 async fn rocket() -> _ {
     rocket::build().mount("/", routes![get_wspr_spots])
 }
-``` 
+```
 
 ### Sample cURL Request
 
@@ -150,40 +164,41 @@ To fetch WSPR spots using the server component, you can use the following cURL c
 
 ```sh
 curl -X GET http://localhost:8000/api/spots
-``` 
+```
 
 ## Client-Side Usage Example
 
 You can also fetch WSPR data using client-side JavaScript. Here is a sample implementation:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
     <title>WSPR Spots</title>
-</head>
-<body>
+  </head>
+  <body>
     <div id="demo"></div>
-    
-    <script> const content = document.getElementById("demo");
-        async function getData() {
-            let response = await fetch("http://localhost:8000/api/spots");
-            let raw = await response.json();
 
-            for (let i of raw) {
-                console.log(i);
-                content.innerHTML += `
+    <script>
+      const content = document.getElementById("demo");
+      async function getData() {
+        let response = await fetch("http://localhost:8000/api/spots");
+        let raw = await response.json();
+
+        for (let i of raw) {
+          console.log(i);
+          content.innerHTML += `
                     <h2>Spot id: ${i.id}</h2>
                     <p>Time: ${i.time}</p>
                     <p>Band: ${i.band}</p>
                 `;
-            }
         }
-        getData(); 
-   </script>
-</body>
+      }
+      getData();
+    </script>
+  </body>
 </html>
-``` 
+```
 
 ## WSPR Guidelines
 
@@ -207,10 +222,10 @@ The `wspr_cdk` is also available as a Docker image:
 
 ```sh
 docker pull lexaraprime/wspr_cdk:master
-``` 
+```
 
 You can find it on Docker Hub: [lexaraprime/wspr_cdk](https://hub.docker.com/layers/lexaraprime/wspr_cdk/master/images/sha256-c869961d9a8413bf8ee562c3507632aeaa4b6e720a97792e7eef5ad984437872?context=repo)
 
----------------------------------
+---
 
 This documentation is also available as a crate on [crates.io](https://crates.io/)
