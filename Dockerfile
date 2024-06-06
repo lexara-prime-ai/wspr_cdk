@@ -55,11 +55,14 @@ ENV ROCKET_PORT=8000
 # Build the project
 RUN cargo build --workspace --release
 
+COPY /scripts/bash/entrypoint.sh /scripts/bash/entrypoint.sh
+RUN chmod +x /scripts/bash/entrypoint.sh
+
 #------------------------------------
 
 # [CURRENT] entry point.
-# Run maturin develop during container initialization
-ENTRYPOINT ["/bin/bash", "-c", ". /opt/venv/bin/activate && maturin develop -m python_wrapper/Cargo.toml && ./target/release/wspr_cdk_server"]
+# Run maturin develop on container initialization.
+ENTRYPOINT ["/scripts/bash/entrypoint.sh"]
 
 #------------------------------------
 
@@ -67,4 +70,3 @@ EXPOSE 8000
 
 # NOTES #
 # End users need to provide/generate their own <service_account.json> credentials.
-# pip install patchelf

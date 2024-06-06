@@ -22,11 +22,12 @@ def upload_to_drive(file_path):
         service = build("drive", "v3", credentials=credentials)
 
         file_metadata = {
-            "name": "wspr_spot_data.csv",
+            "name": constants.FILE_NAME.strip(),
             "parents": [constants.PARENT_FOLDER_ID],
         }
 
         print("[Uploading] file to Google Drive...\n")
+        print("\n[Waiting]\nPress CTRL + C to exit...\n")
 
         service.files().create(body=file_metadata, media_body=file_path).execute()
     except Exception as e:
