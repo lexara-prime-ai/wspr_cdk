@@ -37,7 +37,7 @@ To run the containerized application **securely** while using a **Google Cloud s
 You can do this by using the `-v` flag to mount the `service_account.json` file into the container and the `-e` flag to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable. The following command demonstrates how to run the container with the necessary configurations:
 
 ```sh
-sudo docker run -it -p 8000:8000 -e GOOGLE_APPLICATION_CREDENTIALS=/wspr_cdk/service_account.json -v ./service_account.json:/wspr_cdk/service_account.json test python ./hyper/hyper/server.py --interval 10
+sudo docker run -it -p 8000:8000 -e GOOGLE_APPLICATION_CREDENTIALS=/wspr_cdk/service_account.json -v ./service_account.json:/wspr_cdk/service_account.json wspr_cdk python ./hyper/hyper/server.py --interval 10
 ``` 
 
 -   `-p 8000:8000`: Maps port 8000 on your local machine to port 8000 on the container.
