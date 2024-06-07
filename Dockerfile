@@ -70,3 +70,8 @@ EXPOSE 8000
 
 # NOTES #
 # End users need to provide/generate their own <service_account.json> credentials.
+# You can then start the container with the <credentials> mounted
+# sudo docker run -it -p 8000:8000 \
+#   -e GOOGLE_APPLICATION_CREDENTIALS=/service_account.json \
+#   -v ./service_account.json:/wspr_cdk/service_account.json \
+#   test python ./hyper/hyper/server.py --interval 10
