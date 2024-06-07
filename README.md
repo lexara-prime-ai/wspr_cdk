@@ -24,9 +24,29 @@ Here's a step-by-step guide to ensure proper setup:
 
 3.  **Provide Necessary Permissions**:
     - Ensure that the service account has the required permissions to access Google Drive. You can grant the necessary permissions by assigning the appropriate roles to the service account.
+  
 4.  **Configure Environment**:
     - Place the downloaded `service_account.json` file in the appropriate location accessible to your application. Ensure that the file is named exactly `service_account.json`.
     - If running the application in a Docker container, make sure the `service_account.json` file is _mounted_ into the container at runtime.
+
+
+### Mounting the `service_account.json` File into the Docker Container
+
+To run the containerized application **securely** while using a **Google Cloud service account**, you can mount your `service_account.json` file directly into the container. This ensures that the sensitive credentials are not included in the Docker image but are available to the application at *runtime*.
+
+You can do this by using the `-v` flag to mount the `service_account.json` file into the container and the `-e` flag to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable. The following command demonstrates how to run the container with the necessary configurations:
+
+```sh
+sudo docker run -it -p 8000:8000 -e GOOGLE_APPLICATION_CREDENTIALS=/wspr_cdk/service_account.json -v ./service_account.json:/wspr_cdk/service_account.json test python ./hyper/hyper/server.py --interval 10
+``` 
+
+-   `-p 8000:8000`: Maps port 8000 on your local machine to port 8000 on the container.
+-   `-e GOOGLE_APPLICATION_CREDENTIALS=/wspr_cdk/service_account.json`: Sets the environment variable to point to the service account JSON file inside the container.
+-   `-v ./service_account.json:/wspr_cdk/service_account.json`: Mounts the local `service_account.json` file to `/wspr_cdk/service_account.json` inside the container.
+-   `test`: The name of the Docker image.
+-   `python ./hyper/hyper/server.py --interval 10`: The command to run the Python server with the specified interval.
+
+By using this method, you ensure that your service account credentials are securely provided to the container at runtime without being part of the Docker image.
 
 These steps should ensure that the `service_account.json` file is correctly set up, thus allowing the `server` module to **authenticate** with Google Cloud successfully and avoid encountering the authentication _error mentioned_.
 

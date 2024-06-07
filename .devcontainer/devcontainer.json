@@ -28,3 +28,8 @@
 	}
   }
   
+/* 
+	[Issues]
+
+	- Docker fails to find the following path: /scripts/bash/python_deps.sh
+*/
