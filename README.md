@@ -1,5 +1,25 @@
 # WSPR CDK
 
+## Project Directory Structure(Cargo)
+
+```sh
+wspr_cdk
+│
+├── Cargo.toml
+├── wspr_cdk_server
+│   ├── Cargo.toml
+│   └── src
+│       └── main.rs
+├── python_wrapper
+│   ├── Cargo.toml
+│   └── src
+│       └── lib.rs
+└── windows_container
+    ├── Cargo.toml
+    └── src
+        └── main.rs
+```
+
 `wspr_cdk` provides an abstraction for accessing and analyzing **WSPR** (_Weak Signal Propagation Reporter_) real-time spot data. This crate allows you to perform queries and fetch data from the WSPR database with ease.
 
 ## Prerequisites
