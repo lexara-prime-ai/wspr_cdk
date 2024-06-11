@@ -1,4 +1,4 @@
-``# WSPR CDK
+# WSPR CDK
 
 `wspr_cdk` provides an abstraction for accessing and analyzing **WSPR** (_Weak Signal Propagation Reporter_) real-time spot data. This crate allows you to perform queries and fetch data from the WSPR database with ease.
 
@@ -57,20 +57,6 @@ By using this method, you ensure that your service account credentials are secur
 
 These steps should ensure that the `service_account.json` file is correctly set up, thus allowing the `server` module to **authenticate** with Google Cloud successfully and avoid encountering the authentication _error mentioned_.
 
-### Usage
-
-- To run the **Python** server, use:
-
-```sh
-docker run -it wspr_cdk python ./hyper/hyper/server.py --interval 5 --num_rows 5
-```
-
-- To run the **Rust** server, use:
-
-```sh
-docker run -e ROCKET_ADDRESS=0.0.0.0 -e ROCKET_PORT=8000 -it wspr_cdk rust
-```
-
 ## Features
 
 - Fetch **WSPR** spot data in various formats (**JSON**, **JSONCompact**, **JSONEachRow**)
@@ -89,7 +75,7 @@ To use this crate, add `wspr_cdk` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-wspr_cdk = "0.0.11"
+wspr_cdk = "0.0.12"
 ```
 
 ## Environment Variable
@@ -101,6 +87,18 @@ export BASE_URL=http://db1.wspr.live/
 ```
 
 ## Usage
+
+- To run the **Python** server, use:
+
+```sh
+docker run -it wspr_cdk python ./hyper/hyper/server.py --interval 5 --num_rows 5
+```
+
+- To run the **Rust** server, use:
+
+```sh
+docker run -e ROCKET_ADDRESS=0.0.0.0 -e ROCKET_PORT=8000 -it wspr_cdk rust
+```
 
 Here are some examples of how to use the `wspr_cdk` crate:
 
