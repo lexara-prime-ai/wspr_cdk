@@ -5,7 +5,7 @@
 		"dockerfile": "../Dockerfile"
 	},
 	"forwardPorts": [8000],
-	"postCreateCommand": "bash ./scripts/bash/entrypoint.sh",
+	"postCreateCommand": "bash /scripts/bash/entrypoint.sh",
 	"customizations": {
 	  "vscode": {
 		"extensions": [
