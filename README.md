@@ -1,4 +1,4 @@
-# WSPR CDK
+``# WSPR CDK
 
 `wspr_cdk` provides an abstraction for accessing and analyzing **WSPR** (_Weak Signal Propagation Reporter_) real-time spot data. This crate allows you to perform queries and fetch data from the WSPR database with ease.
 
@@ -10,41 +10,48 @@ When running the application, ensure that the `service_account.json` file has be
 
 Here's a step-by-step guide to ensure proper setup:
 
-1.  **Create a Service Account**:
-    - Go to the Google Cloud Console.
-    - Navigate to the IAM & Admin > Service Accounts page.
-    - Click "Create Service Account".
-    - Fill out the necessary details and click "Create".
-2.  **Generate a JSON Key**:
+1. **Create a Service Account**:
 
-    - After creating the service account, click on the service account you created.
-    - Go to the "Keys" tab.
-    - Click "Add Key", then select "Create new key".
-    - Choose **JSON** as the key type and click "Create". This will download a JSON file containing your credentials.
+- Go to the Google Cloud Console.
+- Navigate to the IAM & Admin > Service Accounts page.
+- Click "Create Service Account".
+- Fill out the necessary details and click "Create".
 
-3.  **Provide Necessary Permissions**:
-    - Ensure that the service account has the required permissions to access Google Drive. You can grant the necessary permissions by assigning the appropriate roles to the service account.
-  
-4.  **Configure Environment**:
-    - Place the downloaded `service_account.json` file in the appropriate location accessible to your application. Ensure that the file is named exactly `service_account.json`.
-    - If running the application in a Docker container, make sure the `service_account.json` file is _mounted_ into the container at runtime.
+2. **Generate a JSON Key**:
 
+- After creating the service account, click on the service account you created.
+- Go to the "Keys" tab.
+- Click "Add Key", then select "Create new key".
+- Choose **JSON** as the key type and click "Create". This will download a JSON file containing your credentials.
 
-### Mounting the `service_account.json` File into the Docker Container
+3. **Provide Necessary Permissions**:
 
-To run the containerized application **securely** while using a **Google Cloud service account**, you can mount your `service_account.json` file directly into the container. This ensures that the sensitive credentials are not included in the Docker image but are available to the application at *runtime*.
+- Ensure that the service account has the required permissions to access Google Drive. You can grant the necessary permissions by assigning the appropriate roles to the service account.
+
+4. **Configure Environment**:
+
+- Place the downloaded `service_account.json` file in the appropriate location accessible to your application. Ensure that the file is named exactly `service_account.json`.
+- If running the application in a Docker container, make sure the `service_account.json` file is _mounted_ into the container at runtime.
+
+### Running the Project in a Development Container
+
+You can run the `wspr_cdk` project in a **Development Container**, ensuring that the setup process only requires Docker to be installed on your system. This simplifies the setup and provides a consistent development environment.
+
+#### Mounting the `service_account.json` File into the Docker Container
+
+To run the containerized application **securely** while using a **Google Cloud service account**, you can mount your `service_account.json` file directly into the container. This ensures that the sensitive credentials are not included in the Docker image but are available to the application at _runtime_.
 
 You can do this by using the `-v` flag to mount the `service_account.json` file into the container and the `-e` flag to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable. The following command demonstrates how to run the container with the necessary configurations:
 
 ```sh
-sudo docker run -it -p 8000:8000 -e GOOGLE_APPLICATION_CREDENTIALS=/wspr_cdk/service_account.json -v ./service_account.json:/wspr_cdk/service_account.json wspr_cdk python ./hyper/hyper/server.py --interval 10
-``` 
+sudo docker run -it -p 8000:8000 -e GOOGLE_APPLICATION_CREDENTIALS=/wspr_cdk/service_account.json -v ./service_account.json:/wspr_cdk/service_account.json wspr_cdk python ./hyper/hyper/server.py --interval 10 --num_rows 10
+```
 
--   `-p 8000:8000`: Maps port 8000 on your local machine to port 8000 on the container.
--   `-e GOOGLE_APPLICATION_CREDENTIALS=/wspr_cdk/service_account.json`: Sets the environment variable to point to the service account JSON file inside the container.
--   `-v ./service_account.json:/wspr_cdk/service_account.json`: Mounts the local `service_account.json` file to `/wspr_cdk/service_account.json` inside the container.
--   `test`: The name of the Docker image.
--   `python ./hyper/hyper/server.py --interval 10`: The command to run the Python server with the specified interval.
+- `-p 8000:8000`: Maps port 8000 on your local machine to port 8000 on the container.
+- `-e GOOGLE_APPLICATION_CREDENTIALS=/wspr_cdk/service_account.json`: Sets the environment variable to point to the service account JSON file inside the container.
+- `-v ./service_account.json:/wspr_cdk/service_account.json`: Mounts the local `service_account.json` file to `/wspr_cdk/service_account.json` inside the container.
+- `wspr_cdk`: The name of the Docker image.
+- `python ./hyper/hyper/server.py --interval 10 --num_rows 10`: The command to run the Python server with the specified interval.
 
 By using this method, you ensure that your service account credentials are securely provided to the container at runtime without being part of the Docker image.
 
@@ -55,7 +62,7 @@ These steps should ensure that the `service_account.json` file is correctly set 
 - To run the **Python** server, use:
 
 ```sh
-docker run -it wspr_cdk python ./hyper/hyper/server.py --interval 5
+docker run -it wspr_cdk python ./hyper/hyper/server.py --interval 5 --num_rows 5
 ```
 
 - To run the **Rust** server, use:
@@ -82,7 +89,7 @@ To use this crate, add `wspr_cdk` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-wspr_cdk = "0.0.10"
+wspr_cdk = "0.0.11"
 ```
 
 ## Environment Variable
@@ -128,7 +135,7 @@ async fn main() {
 ### Example Query
 
 ```sh
-wget -q -O - "http://db1.wspr.live/?query=SELECT * FROM wspr.rx LIMIT 5 FORMAT JSON;"`
+wget -q -O - "http://db1.wspr.live/?query=SELECT * FROM wspr.rx LIMIT 5 FORMAT JSON;"
 ```
 
 ### Sample Output
@@ -147,18 +154,7 @@ ClickHouseState {
             rx_lon: -4.125,
             rx_loc: "IN78wa",
             tx_sign: "DL7NN",
-            tx_lat: 50.771,
-            tx_lon: 12.708,
-            tx_loc: "JO60is",
-            distance: 1253,
-            azimuth: 262,
-            rx_azimuth: 69,
-            frequency: 137433,
-            power: 30,
-            snr: -18,
-            drift: 0,
-            version: "2.6.1",
-            code: 2,
+            ...
         },
     ],
     STATUS: "Fetching all records.",

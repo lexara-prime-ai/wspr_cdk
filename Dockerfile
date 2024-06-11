@@ -58,6 +58,9 @@ RUN cargo build --workspace --release
 COPY /scripts/bash/entrypoint.sh /scripts/bash/entrypoint.sh
 RUN chmod +x /scripts/bash/entrypoint.sh
 
+COPY /scripts/bash/devcontainer.sh /scripts/bash/devcontainer.sh
+RUN chmod +x /scripts/bash/devcontainer.sh
+
 #------------------------------------
 
 # [CURRENT] entry point.

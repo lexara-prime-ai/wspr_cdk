@@ -16,7 +16,7 @@ pyo3 = { version = "0.17", features = ["extension-module"] }
 pyo3-asyncio = { version = "0.17", features = ["tokio-runtime"] }
 tokio = { version = "1", features = ["full"] }
 wspr_cdk = { path = "../wspr_cdk" }  # Adjust the path as needed.
-``` 
+```
 
 ### Rust Code
 
@@ -116,7 +116,7 @@ fn python_wrapper(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_wspr_spots, m)?)?;
     Ok(())
 }
-``` 
+```
 
 ## Usage in Python
 
@@ -138,21 +138,21 @@ import python_wrapper.python_wrapper
 async def main():
     output = await python_wrapper.python_wrapper.get_wspr_spots("10", "JSON")
     print('Output: ', output)
-    
+
     # Get the data in Python-friendly format
     data = output.get_data()
     print('Data: ', data)
 
 if __name__ == '__main__':
     asyncio.run(main())
-``` 
+```
 
 ### Explanation
 
--   **Import the module**: Import the generated Python module `python_wrapper.python_wrapper`.
--   **Define the async function**: Define an asynchronous function `main()` that calls `get_wspr_spots` with the parameters `"10"` and `"JSON"`.
--   **Print the output**: The result of `get_wspr_spots` is printed, showing the internal state of the `ClickHouseStateWrapper`.
--   **Get the data**: Use the `get_data` method to retrieve the data in a Python-friendly format and print it.
+- **Import the module**: Import the generated Python module `python_wrapper.python_wrapper`.
+- **Define the async function**: Define an asynchronous function `main()` that calls `get_wspr_spots` with the parameters `"10"` and `"JSON"`.
+- **Print the output**: The result of `get_wspr_spots` is printed, showing the internal state of the `ClickHouseStateWrapper`.
+- **Get the data**: Use the `get_data` method to retrieve the data in a Python-friendly format and print it.
 
 ### Expected Output
 
@@ -161,10 +161,10 @@ The output will show the string representation of the `ClickHouseStateWrapper` o
 ```sh
 Output: ClickHouseStateWrapper with some internal state: <actual state details>
 Output: [{'id': 7791848067, 'time': '2024-06-03T04:34:00', 'band': 0, ...}, ...]
-``` 
+```
 
 `ClickHouseState` implements the `Debug` trait to provide detailed information when formatted with `{:?}`.
 
 ### To do
 
--   Adjust the `__repr__` and `__str__` methods to customize the output as needed.
+- Adjust the `__repr__` and `__str__` methods to customize the output as needed.
