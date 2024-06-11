@@ -1,10 +1,10 @@
 #![allow(unused_imports)]
 
 // Run the <windows_container> module independently:
-// cargo run -p ./windows_container/Cargo.toml
+// cargo run -p windows_container
 
 // Build the <windows_container> module independently:
-// cargo build --workspace -p ./windows_container/Cargo.toml
+// cargo build -p windows_container
 
 // Command:
 // docker run -it --rm -p 8006:8006 --device=/dev/kvm --cap-add NET_ADMIN --stop-timeout 120 --name windows dockurr/windows
