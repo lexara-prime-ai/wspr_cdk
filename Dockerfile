@@ -78,3 +78,15 @@ EXPOSE 8000
 #   -e GOOGLE_APPLICATION_CREDENTIALS=/service_account.json \
 #   -v ./service_account.json:/wspr_cdk/service_account.json \
 #   test python ./hyper/hyper/server.py --interval 10
+
+
+# Building & Running [standalone] modules:
+#
+# cargo build --release --workspace -> Builds all <workspace> modules.
+# cargo build --release -p windows_container
+# cargo build --release -p wspr_cdk_server
+# cargo build --release -p wspr_cdk
+
+# cargo run --release --manifest-path ./wspr_cdk_server/Cargo.toml
+# cargo run --release --manifest-path wspr_cdk/Cargo.toml
+# cargo run --release --manifest-path windows_container/Cargo.toml

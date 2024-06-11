@@ -1,4 +1,8 @@
-workspace = { members = ["wspr_cdk_server", "python_wrapper"] }
+workspace = { members = [
+  "wspr_cdk_server",
+  "python_wrapper",
+  "windows_container",
+] }
 [package]
 name = "wspr_cdk"
 version = "0.0.12"
