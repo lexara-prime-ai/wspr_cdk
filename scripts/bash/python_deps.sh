@@ -10,7 +10,7 @@ fi
 
 
 # Modules that will be installed/upgraded.
-modules=("mkdocs" "maturin" "patchelf" "tableauhyperapi" "google-api-python-client" "google-auth-httplib2" "google-auth-oauthlib")
+modules=("modal" "mkdocs" "maturin" "patchelf" "tableauhyperapi" "google-api-python-client" "google-auth-httplib2" "google-auth-oauthlib")
 
 echo "Installing dependencies: ${modules[*]}..."
 pip install "${modules[@]}" --upgrade
@@ -29,6 +29,7 @@ verify_installation() {
 
 # The following dictionary contains module to import name mappings.
 declare -A module_import_map=(
+	["modal"]="modal" # To Do -> Update Docker configuration to include modal cli configuration.
 	["mkdocs"]="mkdocs"
 	["maturin"]="maturin"
 	["patchelf"]="patchelf"
