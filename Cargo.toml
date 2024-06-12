@@ -2,7 +2,6 @@ workspace = { members = [
   "wspr_cdk_server",
   "python_wrapper",
   "windows_container",
-  "web_scraper",
 ] }
 [package]
 name = "wspr_cdk"
