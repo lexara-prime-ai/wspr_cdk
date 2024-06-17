@@ -3,6 +3,8 @@
 *.tfstate
 .env
 service_account.json
+garage.toml
+
 # Added by cargo
 
 /target

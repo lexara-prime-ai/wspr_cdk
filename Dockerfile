@@ -63,13 +63,19 @@ RUN chmod +x /scripts/bash/devcontainer.sh
 
 #------------------------------------
 
+# Download <garage> -> ARCH: linux/amd64
+RUN wget --progress=dot:giga https://garagehq.deuxfleurs.fr/_releases/v1.0.0/x86_64-unknown-linux-musl/garage
+
+#------------------------------------
+
+
 # [CURRENT] entry point.
 # Run maturin develop on container initialization.
 ENTRYPOINT ["/scripts/bash/entrypoint.sh"]
 
 #------------------------------------
 
-EXPOSE 8000
+EXPOSE 3900-3904 8000
 
 # NOTES #
 # End users need to provide/generate their own <service_account.json> credentials.
@@ -90,3 +96,13 @@ EXPOSE 8000
 # cargo run --release --manifest-path ./wspr_cdk_server/Cargo.toml
 # cargo run --release --manifest-path wspr_cdk/Cargo.toml
 # cargo run --release --manifest-path windows_container/Cargo.toml
+
+
+# Specify a range of ports to expose in the dockerfile and when running it:
+
+#     on dockerfile:
+#     EXPOSE 8888-8898
+#     Build image:
+#     docker build -t <image_name>:<version> -f dockerfile .
+#     When running the image:
+#     docker run -it -p 8888-8898:8888-8898 -v C:\x\x\x:/app <image_name>:<version>

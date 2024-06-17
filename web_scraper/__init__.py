@@ -39,26 +39,26 @@ def get_tables(url):
 
 
 @app.local_entrypoint()
-def main(urls: str):
+def main(urls: str, output_file: str):
     url_list = urls.split(",")
-    for url in url_list:
-        try:
-            # Direct call to get_tables.
-            tables = get_tables(url)
-            print(f"Tables from {url}:\n")
-            for table in tables:
-                print(table)
-                print("\n\n")
-        except Exception as e:
-            print(f"Error processing {url}: {e}")
+    with open(output_file, "w", encoding="utf-8") as f:
+        for url in url_list:
+            try:
+                # Direct call to get_tables
+                tables = get_tables(url)
+                f.write(f"<h2>Tables from {url}</h2><br>")
+                for table in tables:
+                    f.write(table)
+            except Exception as e:
+                f.write(f"Error processing {url}: {e}\n")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Receive multiple URLs as arguments.")
+    parser = argparse.ArgumentParser(description="Receive multiple URLs as arguments.")
     parser.add_argument(
         "urls", type=str, help="Comma-separated list of URLs to scrape."
     )
+    parser.add_argument("output_file", type=str, help="Path to the output file.")
 
     args = parser.parse_args()
-    main(args.urls)
+    main(args.urls, args.output_file)
