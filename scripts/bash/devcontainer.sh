@@ -36,6 +36,12 @@ admin_token = "${ADMIN_TOKEN}"
 metrics_token = "${METRICS_TOKEN}"
 EOF
 
+# <garage> checks for the /etc/garage.toml by default.
+mv garage.toml /etc
+
+# [DEBUG] logs.
+garage --version
+
 # Activate the virtual environment
 source /opt/venv/bin/activate
 
