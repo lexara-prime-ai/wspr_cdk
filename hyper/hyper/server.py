@@ -19,6 +19,7 @@ class Server:
 
     # ---------------------------------------------------
     """Fetch data from WSPR database via <wspr_cdk>."""
+
     # ---------------------------------------------------
     async def fetch_data(self):
         try:
@@ -31,6 +32,7 @@ class Server:
 
     # ----------------------------------------------
     """Write data to <csv> file asynchronously."""
+
     # ----------------------------------------------
     async def write_to_csv(self):
         """
@@ -111,6 +113,10 @@ class Server:
         except Exception as e:
             self.error_handling.propagate_error("write_to_csv", f"{e}")
 
+    # -----------------------------------
+    """Display [output] via <stdout>."""
+
+    # -----------------------------------
     async def display_data(self, data):
         """
         Args: self, data -> WsprSpot dict.
@@ -168,6 +174,11 @@ class Server:
             await asyncio.sleep(self.interval)
 
 
+# ------------------------------
+"""Define <input> arguments."""
+
+
+# ------------------------------
 def parse_args():
     try:
         parser = argparse.ArgumentParser(description="WSPR Spot Data Server")
