@@ -26,7 +26,7 @@ impl ClickHouseClient {
             ClickHouseAction::Get => {
                 println!("Fetching all records...");
 
-                let query = "select * from wspr.rx where time > subtractHours(now(), 2) limit";
+                let query = "select * from wspr.rx where time > subtractHours(now(), 12) limit";
 
                 // Create [SERVICE] request.
                 let result = data::DataService::GET_SPOT_DATA(
