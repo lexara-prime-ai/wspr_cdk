@@ -5,6 +5,7 @@ import os
 
 import constants
 import drive
+import error_handling
 
 import python_wrapper.python_wrapper
 
@@ -14,7 +15,23 @@ class Server:
         self.write_path = os.path.join(constants.FILE_PATH, constants.FILE_NAME)
         self.interval = interval
         self.num_rows = num_rows
+        self.error_handling = error_handling.ErrorHandling()
 
+    # ---------------------------------------------------
+    """Fetch data from WSPR database via <wspr_cdk>."""
+    # ---------------------------------------------------
+    async def fetch_data(self):
+        try:
+            output = await python_wrapper.python_wrapper.get_wspr_spots(
+                self.num_rows, "JSON"
+            )
+            return output
+        except Exception as e:
+            self.error_handling.propagate_error("fetch_data", f"{e}")
+
+    # ----------------------------------------------
+    """Write data to <csv> file asynchronously."""
+    # ----------------------------------------------
     async def write_to_csv(self):
         """
         Args: self.
@@ -22,9 +39,7 @@ class Server:
         """
 
         try:
-            output = await python_wrapper.python_wrapper.get_wspr_spots(
-                self.num_rows, "JSON"
-            )
+            output = await self.fetch_data()
             data = output.get_data()
 
             # Display data that's being fetched for [DEBUG] purposes.
@@ -94,7 +109,7 @@ class Server:
             # Upload [output] file to Google Drive.
             drive.upload_to_drive(constants.FULL_PATH)
         except Exception as e:
-            print("An [ERROR] occurred: ", e)
+            self.error_handling.propagate_error("write_to_csv", f"{e}")
 
     async def display_data(self, data):
         """
