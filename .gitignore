@@ -2,6 +2,7 @@
 .terraform
 *.tfstate
 .env
+/**/.venv
 service_account.json
 garage.toml
 

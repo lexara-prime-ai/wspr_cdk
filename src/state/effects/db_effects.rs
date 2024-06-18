@@ -26,11 +26,24 @@ impl ClickHouseClient {
             ClickHouseAction::Get => {
                 println!("Fetching all records...");
 
-                let query = "select * from wspr.rx where time > subtractHours(now(), 12) limit";
+                /*
+                    A <String> is a growable buffer. Its purpose is to be modifiable.
+                    Why would you pass around a <String> if it's meant to be constant?
+                    Remember that API should usually take a <&str> as argument, not a <String>.
+                    The right constant type is <&str>. – Denys Séguret
+
+                    Hence,
+
+                    const QUERY: &str =
+                    "select * from wspr.rx where time > subtractHours(now(), 12) limit";
+                */
+
+                const QUERY: &str =
+                    "select * from wspr.rx where time > subtractHours(now(), 12) limit";
 
                 // Create [SERVICE] request.
                 let result = data::DataService::GET_SPOT_DATA(
-                    &query.to_string(),
+                    &QUERY.to_string(),
                     limit.to_string(),
                     Some(result_format.to_string()),
                 )
