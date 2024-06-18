@@ -1,29 +1,49 @@
 #!/bin/bash
 
+# Terminal Colors.
+NORMAL=$(tput sgr0)
+UNDERLINE=$(tput smul)
+RED=$(tput setaf 1)
+BLUE=$(tput setaf 4)
+GREEN=$(tput setaf 2)
+# BLACK=$(tput setaf 0)
+# YELLOW=$(tput setaf 3)
+# LIME_YELLOW=$(tput setaf 190)
+# POWDER_BLUE=$(tput setaf 153)
+# MAGENTA=$(tput setaf 5)
+# CYAN=$(tput setaf 6)
+# WHITE=$(tput setaf 7)
+# BRIGHT=$(tput bold)
+# NORMAL=$(tput sgr0)
+# REVERSE=$(tput smso)
+# BLINK=$(tput blink)
+
+# Install [patchelf]
+sudo apt-get -y install patchelf -y
+
 # Check if pip is installed.
 if ! command -v pip &>/dev/null; then
-	echo "pip not found. Installing pip..."
+	echo "${BLUE}pip not found. Installing pip...${NORMAL}"
 	sudo apt-get install -y python3-pip
 else
-	echo "pip is already installed."
+	echo "${GREEN}pip is already installed.${NORMAL}"
 fi
-
 
 # Modules that will be installed/upgraded.
 modules=("modal" "mkdocs" "maturin" "patchelf" "tableauhyperapi" "google-api-python-client" "google-auth-httplib2" "google-auth-oauthlib")
 
-echo "Installing dependencies: ${modules[*]}..."
+echo "${BLUE}Installing dependencies: ${modules[*]}...${NORMAL}"
 pip install "${modules[@]}" --upgrade
 
 # Verify module installation.
 verify_installation() {
 	local module=$1
 	local import_name=$2
-	echo "Verifying ${module} installation..."
+	printf "\nVERIFYING %s INSTALLATION...\n" "${module}"
 	if python3 -c "import ${import_name}" &>/dev/null; then
-		echo "${module} successfully installed."
+		printf "%s ${UNDERLINE}${GREEN}SUCCESSFULLY${NORMAL} INSTALLED.\n\n" "${module}"
 	else
-		echo "Failed to install ${module}."
+		echo "${UNDERLINE}${RED}FAILED${NORMAL} TO INSTALL ${module}."
 	fi
 }
 
