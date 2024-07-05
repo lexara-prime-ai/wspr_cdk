@@ -20,7 +20,7 @@ async fn main() {
     let mut state = ClickHouseClient::init();
     let session = session_manager::SessionManager::new();
 
-    ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "1", "JSON").await;
+    ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "10", "JSON").await;
 
     println!("\n{:#?}\n", state);
 

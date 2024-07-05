@@ -39,7 +39,7 @@ impl ClickHouseClient {
                 */
 
                 const QUERY: &str =
-                    "select * from wspr.rx where time > subtractHours(now(), 12) limit";
+                    "select * from wspr.rx where time > subtractHours(now(), 35040) limit";
 
                 // Create [SERVICE] request.
                 let result = data::DataService::GET_SPOT_DATA(

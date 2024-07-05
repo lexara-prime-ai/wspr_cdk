@@ -33,11 +33,11 @@ tokio = { version = "1.38.0", features = ["full"] }
 # strip = true
 
 # Optimize for size.
-[profile.release]
-opt-level = "z"  
+# [profile.release]
+# opt-level = "z"  
 
 
 # Enable Link Time Optimization.
 # Instructs the linker to optimize at the link stage.
-# [profile.release]
-# lto = true
+[profile.release]
+lto = true
