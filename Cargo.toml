@@ -22,9 +22,17 @@ license = "BSD-1-Clause"
 [dependencies]
 anyhow = "1.0.86"
 chrono = { version = "0.4.38", features = ["serde"] }
-clickhouse = "0.11.6"
 dotenv = "0.15.0"
 reqwest = { version = "0.12.5", features = ["json"] }
 serde = { version = "1.0.203", features = ["derive"] }
 serde_json = "1.0.119"
 tokio = { version = "1.38.0", features = ["full"] }
+
+[profile.release]
+strip = true
+
+# [profile.release]
+# opt-level = "z"
+
+# [profile.release]
+# lto = true
