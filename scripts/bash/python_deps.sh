@@ -30,7 +30,7 @@ else
 fi
 
 # Modules that will be installed/upgraded.
-modules=("modal" "mkdocs" "maturin" "patchelf" "tableauhyperapi" "google-api-python-client" "google-auth-httplib2" "google-auth-oauthlib")
+modules=("modal" "mkdocs" "maturin" "tableauhyperapi" "google-api-python-client" "google-auth-httplib2" "google-auth-oauthlib")
 
 echo "${BLUE}Installing dependencies: ${modules[*]}...${NORMAL}"
 pip install "${modules[@]}" --upgrade
@@ -52,7 +52,6 @@ declare -A module_import_map=(
 	["modal"]="modal" # To Do -> Update Docker configuration to include modal cli configuration.
 	["mkdocs"]="mkdocs"
 	["maturin"]="maturin"
-	["patchelf"]="patchelf"
 	["tableauhyperapi"]="tableauhyperapi"
 	["google-api-python-client"]="googleapiclient"
 	["google-auth-httplib2"]="google_auth_httplib2"

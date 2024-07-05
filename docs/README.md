@@ -5,10 +5,12 @@
     
     -   What is the total number of spots recorded in a given time period?
     -   How many unique receivers and transmitters are there in the data?
+
 2.  **Time-Based Analysis:**
     
     -   What is the distribution of spots over different times of the day or days of the week?
     -   How does the number of spots vary over different months?
+
 3.  **Geographical Analysis:**
     
     -   What are the most common receiver and transmitter locations (latitude and longitude)?
@@ -20,10 +22,12 @@
     
     -   How does the signal-to-noise ratio (SNR) vary with distance?
     -   What is the relationship between power and distance?
+
 2.  **Frequency and Band Analysis:**
     
     -   How does the frequency distribution look like across different bands?
     -   Which band has the highest average SNR?
+
 3.  **Performance Analysis:**
     
     -   Which version of the software (Version) shows the best performance in terms of SNR?
@@ -34,6 +38,7 @@
     
     -   How does the signal propagation vary between different times of the day (e.g., day vs. night)?
     -   How does the performance vary across different months?
+
 2.  **Geographical Comparison:**
     
     -   How does the SNR differ between different geographical regions?
@@ -45,6 +50,7 @@
     
     -   Can we identify any patterns in the data that suggest certain times or conditions are better for signal transmission?
     -   Are there any anomalies or outliers in the data that require further investigation?
+
 2.  **Predictive Analysis:**
     
     -   Can we predict the SNR based on other variables such as distance, power, frequency, and band?

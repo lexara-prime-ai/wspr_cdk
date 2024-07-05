@@ -1,25 +1,5 @@
 # WSPR CDK
 
-## Project Directory Structure(Cargo)
-
-```sh
-wspr_cdk
-│
-├── Cargo.toml
-├── wspr_cdk_server
-│   ├── Cargo.toml
-│   └── src
-│       └── main.rs
-├── python_wrapper
-│   ├── Cargo.toml
-│   └── src
-│       └── lib.rs
-└── windows_container
-    ├── Cargo.toml
-    └── src
-        └── main.rs
-```
-
 `wspr_cdk` provides an abstraction for accessing and analyzing **WSPR** (_Weak Signal Propagation Reporter_) real-time spot data. This crate allows you to perform queries and fetch data from the WSPR database with ease.
 
 ## Prerequisites
@@ -182,43 +162,6 @@ ClickHouseState {
 ## Server Component
 
 The server component allows you to access and share real-time WSPR data via HTTP. Below is a snippet of the server component source code:
-
-```rust
-#[macro_use]
-extern crate rocket;
-
-use anyhow::Error;
-use rocket::http::Status;
-use rocket::response::{content, status};
-use rocket::serde::json::Json;
-use serde::{Deserialize, Serialize};
-use std::result::Result::{Err, Ok};
-
-// Required [modules].
-use wspr_cdk::{services::prelude::*, state::prelude::*};
-
-/// Get all <wspr> spots.
-#[get("/api/spots")]
-async fn get_wspr_spots() -> Result<Json<Vec<WsprSpot>>, status::Custom<String>> {
-    let mut state = ClickHouseClient::init();
-    let _session = session_manager::SessionManager::new();
-
-    match ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "10", "JSON").await {
-        Ok(Some(spots)) => Ok(Json(spots)),
-        Ok(None) => Err(status::Custom(Status::NotFound, "No spots found".into())),
-        Err(e) => Err(status::Custom(
-            Status::InternalServerError,
-            format!("Failed to fetch spots: {:?}", e),
-        )),
-    }
-}
-
-#[launch]
-#[rocket::main]
-async fn rocket() -> _ {
-    rocket::build().mount("/", routes![get_wspr_spots])
-}
-```
 
 ### Sample cURL Request
 
