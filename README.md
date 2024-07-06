@@ -1,86 +1,62 @@
+
 # WSPR CDK
 
-`wspr_cdk` provides an abstraction for accessing and analyzing **WSPR** (_Weak Signal Propagation Reporter_) real-time spot data. This crate allows you to perform queries and fetch data from the WSPR database with ease.
+`wspr_cdk` makes it easy to access and analyze **WSPR** (_Weak Signal Propagation Reporter_) real-time spot data from the WSPR database.
 
 ## Prerequisites
 
-When running the application, ensure that the `service_account.json` file has been set up correctly. This file contains the authentication _credentials_ needed to access the **Google Drive API**.
+Ensure the `service_account.json` file is correctly set up for Google Drive API authentication. If missing or misconfigured, you will encounter authentication errors.
 
-- If this file is _missing_ or _incorrectly configured_, you will encounter an authentication error when attempting to upload files to Google Drive.
+### Setup Guide:
 
-Here's a step-by-step guide to ensure proper setup:
+1.  **Create a Service Account**:
 
-1. **Create a Service Account**:
+    -   Go to the Google Cloud Console.
+    -   Navigate to IAM & Admin > Service Accounts.
+    -   Click "Create Service Account", fill out the details, and click "Create".
+2.  **Generate a JSON Key**:
 
-- Go to the Google Cloud Console.
-- Navigate to the IAM & Admin > Service Accounts page.
-- Click "Create Service Account".
-- Fill out the necessary details and click "Create".
+    -   Click on the created service account.
+    -   Go to the "Keys" tab.
+    -   Click "Add Key" > "Create new key" > **JSON**. This downloads a JSON file with your credentials.
+3.  **Provide Permissions**:
 
-2. **Generate a JSON Key**:
+    -   Assign the necessary roles to the service account for Google Drive access.
+4.  **Configure Environment**:
 
-- After creating the service account, click on the service account you created.
-- Go to the "Keys" tab.
-- Click "Add Key", then select "Create new key".
-- Choose **JSON** as the key type and click "Create". This will download a JSON file containing your credentials.
+    -   Place `service_account.json` in an accessible location for your application.
+    -   If using Docker, mount `service_account.json` into the container at runtime.
 
-3. **Provide Necessary Permissions**:
+### Running in a Development Container
 
-- Ensure that the service account has the required permissions to access Google Drive. You can grant the necessary permissions by assigning the appropriate roles to the service account.
-
-4. **Configure Environment**:
-
-- Place the downloaded `service_account.json` file in the appropriate location accessible to your application. Ensure that the file is named exactly `service_account.json`.
-- If running the application in a Docker container, make sure the `service_account.json` file is _mounted_ into the container at runtime.
-
-### Running the Project in a Development Container
-
-You can run the `wspr_cdk` project in a **Development Container**, ensuring that the setup process only requires Docker to be installed on your system. This simplifies the setup and provides a consistent development environment.
-
-#### Mounting the `service_account.json` File into the Docker Container
-
-To run the containerized application **securely** while using a **Google Cloud service account**, you can mount your `service_account.json` file directly into the container. This ensures that the sensitive credentials are not included in the Docker image but are available to the application at _runtime_.
-
-You can do this by using the `-v` flag to mount the `service_account.json` file into the container and the `-e` flag to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable. The following command demonstrates how to run the container with the necessary configurations:
+To run `wspr_cdk` in a **Development Container**, use Docker. Mount the `service_account.json` file securely to provide credentials at runtime:
 
 ```sh
-sudo docker run -it -p 8000:8000 -e GOOGLE_APPLICATION_CREDENTIALS=/wspr_cdk/service_account.json -v ./service_account.json:/wspr_cdk/service_account.json wspr_cdk python ./hyper/hyper/server.py --interval 10 --num_rows 10
+`sudo docker run -it -p 8000:8000 -e GOOGLE_APPLICATION_CREDENTIALS=/wspr_cdk/service_account.json -v ./service_account.json:/wspr_cdk/service_account.json wspr_cdk python ./hyper/hyper/server.py --interval 10 --num_rows 10
 ```
-
-- `-p 8000:8000`: Maps port 8000 on your local machine to port 8000 on the container.
-- `-e GOOGLE_APPLICATION_CREDENTIALS=/wspr_cdk/service_account.json`: Sets the environment variable to point to the service account JSON file inside the container.
-- `-v ./service_account.json:/wspr_cdk/service_account.json`: Mounts the local `service_account.json` file to `/wspr_cdk/service_account.json` inside the container.
-- `wspr_cdk`: The name of the Docker image.
-- `python ./hyper/hyper/server.py --interval 10 --num_rows 10`: The command to run the Python server with the specified interval.
-
-By using this method, you ensure that your service account credentials are securely provided to the container at runtime without being part of the Docker image.
-
-These steps should ensure that the `service_account.json` file is correctly set up, thus allowing the `server` module to **authenticate** with Google Cloud successfully and avoid encountering the authentication _error mentioned_.
 
 ## Features
 
-- Fetch **WSPR** spot data in various formats (**JSON**, **JSONCompact**, **JSONEachRow**)
-- Easy integration with **Tokio** for asynchronous operations
-- Abstractions to manage session state and dispatch actions to the **ClickHouse** client
-- **Server component** for accessing and sharing real-time data via HTTP
+-   Fetch WSPR spot data in formats: **JSON**, **JSONCompact**, **JSONEachRow**
+-   Integrate with **Tokio** for asynchronous operations
+-   Manage session state and dispatch actions to the **ClickHouse** client
+-   **Server component** for sharing real-time data via HTTP
 
 ### Upcoming Features
 
-- **Mutual TLS** for secure client-server communications
-- **SSL (OpenSSL)** support for encrypted data transfer
+-   **Mutual TLS** for secure communications
+-   **SSL (OpenSSL)** support for encrypted data transfer
 
 ## Installation
 
-To use this crate, add `wspr_cdk` to your `Cargo.toml`:
+Add `wspr_cdk` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
 wspr_cdk = "0.0.12"
 ```
 
-## Environment Variable
-
-Before using the crate, ensure you set the following environment variable:
+Set the environment variable:
 
 ```sh
 export BASE_URL=http://db1.wspr.live/
@@ -88,43 +64,35 @@ export BASE_URL=http://db1.wspr.live/
 
 ## Usage
 
-- To run the **Python** server, use:
+Run the **Python** server:
 
 ```sh
 docker run -it wspr_cdk python ./hyper/hyper/server.py --interval 5 --num_rows 5
 ```
 
-- To run the **Rust** server, use:
+Run the **Rust** server:
 
 ```sh
 docker run -e ROCKET_ADDRESS=0.0.0.0 -e ROCKET_PORT=8000 -it wspr_cdk rust
 ```
 
-Here are some examples of how to use the `wspr_cdk` crate:
+### Example Rust Code
 
 ```rust
-#![allow(unused)]
-
 use chrono::NaiveDateTime;
 use wspr::{services::prelude::*, state::prelude::*};
 
 #[tokio::main]
 async fn main() {
-    // Initialize the ClickHouse client state
     let mut state = ClickHouseClient::init();
     let session = session_manager::SessionManager::new();
 
-    // Dispatch a GET request to fetch data in JSON format
     ClickHouseClient::dispatch(&mut state, ClickHouseAction::Get, "10", "JSON").await;
-
-    // Print the state after fetching data
     println!("\n{:#?}\n", state);
 
-    // Example of fetching data by ID
     ClickHouseClient::dispatch(&mut state, ClickHouseAction::GetById(1));
     println!("\n[OUTPUT]: {:?}", state);
 
-    // Example of serializing response to JSON
     let json_response = serde_json::to_string_pretty(&response).unwrap();
     println!("{}", json_response);
 }
@@ -161,11 +129,7 @@ ClickHouseState {
 
 ## Server Component
 
-The server component allows you to access and share real-time WSPR data via HTTP. Below is a snippet of the server component source code:
-
-### Sample cURL Request
-
-To fetch WSPR spots using the server component, you can use the following cURL command:
+Access and share real-time WSPR data via HTTP. Example cURL request:
 
 ```sh
 curl -X GET http://localhost:8000/api/spots
@@ -173,7 +137,7 @@ curl -X GET http://localhost:8000/api/spots
 
 ## Client-Side Usage Example
 
-You can also fetch WSPR data using client-side JavaScript. Here is a sample implementation:
+Fetch WSPR data using client-side JavaScript:
 
 ```html
 <!doctype html>
@@ -184,8 +148,7 @@ You can also fetch WSPR data using client-side JavaScript. Here is a sample impl
   <body>
     <div id="demo"></div>
 
-    <script>
-      const content = document.getElementById("demo");
+    <script> const content = document.getElementById("demo");
       async function getData() {
         let response = await fetch("http://localhost:8000/api/spots");
         let raw = await response.json();
@@ -199,15 +162,14 @@ You can also fetch WSPR data using client-side JavaScript. Here is a sample impl
                 `;
         }
       }
-      getData();
-    </script>
+      getData(); </script>
   </body>
 </html>
-```
+````
 
 ## WSPR Guidelines
 
-**Disclaimer**: The dataset contains the raw **spot** data as reported, saved, and published by _wsprnet.org_. Therefore, there might be **duplicates**, **false** spots, and other **errors** in the data. Keep this in mind when you see something strange. You are allowed to use the services provided on **wspr.live** for your own research and projects, as long as the results are accessible **free of charge for everyone**. You are **NOT** allowed to use this service for any _**commercial**_ or _**profit-oriented**_ use cases. The complete WSPR infrastructure is maintained by volunteers in their spare time, so there are no guarantees on the correctness, availability, or stability of these services.
+**Disclaimer**: The dataset may contain duplicates, false spots, and other errors. Use the services provided on **wspr.live** for non-commercial, free research projects. No guarantees on the correctness, availability, or stability of these services.
 
 ## License
 
@@ -215,22 +177,18 @@ This project is licensed under the BSD License. See the LICENSE file for details
 
 ## Contribution
 
-Contributions are **welcome**! Please submit issues or pull requests as needed. Ensure that your contributions comply with the licensing and guidelines set forth.
+Contributions are welcome! Please submit issues or pull requests. Ensure compliance with the licensing and guidelines.
 
 ## Acknowledgments
 
-Special thanks to the WSPR community for providing access to the data and maintaining the infrastructure.
+Special thanks to the WSPR community for data access and infrastructure maintenance.
 
 ## Docker Image
 
-The `wspr_cdk` is also available as a Docker image:
+The `wspr_cdk` is available on Docker Hub:
 
 ```sh
 docker pull lexaraprime/wspr_cdk:master
 ```
 
-You can find it on Docker Hub: [lexaraprime/wspr_cdk](https://hub.docker.com/layers/lexaraprime/wspr_cdk/master/images/sha256-c869961d9a8413bf8ee562c3507632aeaa4b6e720a97792e7eef5ad984437872?context=repo)
-
----
-
-This documentation is also available as a crate on [crates.io](https://crates.io/)
+Documentation is also available on [crates.io](https://crates.io/).
