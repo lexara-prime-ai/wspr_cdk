@@ -3,10 +3,10 @@ import asyncio
 import csv
 import os
 
+# Utility modules.
 import constants
 import drive
 import error_handling
-
 import python_wrapper.python_wrapper
 
 
@@ -169,17 +169,23 @@ class Server:
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="WSPR Spot Data Server")
+    try:
+        parser = argparse.ArgumentParser(description="WSPR Spot Data Server")
 
-    # Receive the [interval] from the user.
-    parser.add_argument(
-        "--interval", type=int, default=900, help="Sleep interval in seconds"
-    )
-    # Receive the [num_rows] from the user.
-    parser.add_argument(
-        "--num_rows", type=str, default="10", help="Number of rows to return"
-    )
-    return parser.parse_args()
+        # Receive the [interval] from the user.
+        parser.add_argument(
+            "--interval", type=int, default=900, help="Sleep interval in seconds"
+        )
+        # Receive the [num_rows] from the user.
+        parser.add_argument(
+            "--num_rows", type=str, default="10", help="Number of rows to return"
+        )
+        return parser.parse_args()
+    except Exception as e:
+        self.error_handling.propagate_error(
+            f"{parse_args.__name__}",
+            f"Failed to parse arguments: {e}"
+        )
 
 
 if __name__ == "__main__":
