@@ -61,6 +61,12 @@ RUN chmod +x /scripts/bash/entrypoint.sh
 COPY /scripts/bash/devcontainer.sh /scripts/bash/devcontainer.sh
 RUN chmod +x /scripts/bash/devcontainer.sh
 
+COPY /scripts/bash/build_wheel.sh /scripts/bash/build_wheel.sh
+RUN chmod +x /scripts/bash/build_wheel.sh
+
+# Build <python_wrapper> wheel
+RUN /scripts/bash/build_wheel.sh
+
 #------------------------------------
 
 # Download <garage> -> ARCH: linux/amd64
