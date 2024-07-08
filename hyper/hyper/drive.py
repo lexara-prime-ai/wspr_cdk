@@ -1,4 +1,8 @@
+# Utility modules.
 import constants
+import error_handling
+
+# Google deps.
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
@@ -13,7 +17,10 @@ def authenticate():
 
         return credentials
     except Exception as e:
-        print("\n[ERROR] -> Failed to [Authenticate] <wspr_cdk> service user: \n", e)
+        error_handling.ErrorHandling.propagate_error(
+            f"{authenticate.__name__}",
+            f"\n[ERROR] -> Failed to [Authenticate] <wspr_cdk> service user: {e}\n"
+        )
 
 
 def upload_to_drive(file_path):
@@ -31,4 +38,7 @@ def upload_to_drive(file_path):
 
         service.files().create(body=file_metadata, media_body=file_path).execute()
     except Exception as e:
-        print("\n[ERROR] -> Failed to upload to Google Drive: \n", e)
+        error_handling.ErrorHandling.propagate_error(
+            f"{upload_to_drive.__name__}",
+            f"\n[ERROR] -> Failed to upload to Google Drive: {e}\n"
+        )
