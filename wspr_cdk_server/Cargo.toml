@@ -11,6 +11,6 @@ anyhow = "1.0.86"
 chrono = { version = "0.4.38", features = ["serde"] }
 dotenv = "0.15.0"
 rocket = { version = "0.5.1", features = ["json"] }
-serde = { version = "1.0.204", features = ["derive"] }
-serde_json = "1.0.121"
-tokio = { version = "1.39.2", features = ["full"] }
+serde = { version = "1.0.210", features = ["derive"] }
+serde_json = "1.0.128"
+tokio = { version = "1.40.0", features = ["full"] }
